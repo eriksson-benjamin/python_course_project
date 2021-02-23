@@ -1,0 +1,74 @@
+Wrote profile results to time_profiler.py.lprof
+Timer unit: 1e-06 s
+
+Total time: 4.77448 s
+File: ../functions/tofu_functions.py
+Function: sTOF4 at line 454
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   454                                           @profile
+   455                                           def sTOF4(S1_times, S2_times, t_back = 100, t_forward = 100, return_indices = False, timer = False):
+   456                                           
+   457                                               '''
+   458                                               We choose an event in S2, define the width of the window in which we want
+   459                                               to search for an event in S1 and calculate the time difference between 
+   460                                               the chosen S2 time stamp and the found S1 time stamp(s)
+   461                                               S1_times: 1D array of time stamps for one S1
+   462                                               S2_times: 1D array of time stamps for one S2
+   463                                               t_back: Number of time units (usually ns) to look back in time to find coincidences between S2 and S1 (gives positive TOF's)
+   464                                               t_forward: Number of time units (usually ns) to look forwards in time to find coincidences between S2 and S1 (gives negative TOF's)
+   465                                               Example: coincidences = sTOF3(S1_time_stamps, S2_time_stamps, t_back = 400, t_forward = 200)
+   466                                               '''
+   467         1          9.0      9.0      0.0      if timer: t_start = elapsed_time()
+   468                                               # Define time windows
+   469         1      22064.0  22064.0      0.5      w_low = S2_times - t_back
+   470         1      12954.0  12954.0      0.3      w_high = S2_times + t_forward
+   471                                               
+   472                                               # We will store time differences in dt
+   473         1      13045.0  13045.0      0.3      dt = -9999 * np.ones(5 * len(S2_times))
+   474         1      13069.0  13069.0      0.3      ind = -9999 * np.ones([5 * len(S2_times), 2])
+   475         1          2.0      2.0      0.0      counter = 0
+   476         1          1.0      1.0      0.0      finished = False
+   477                                               
+   478    196024     167855.0      0.9      3.5      for i in range(0, len(S2_times)):
+   479                                                   
+   480    196024     161389.0      0.8      3.4          search_sorted = 0
+   481                                                   # Find the time stamp in S1 closest to wLow (rounded up, i.e. just outside the window)
+   482    196024    1192767.0      6.1     25.0          lowest_index = np.searchsorted(S1_times, w_low[i])
+   483    196024     211724.0      1.1      4.4          while True:
+   484                                                       # Increase to next event
+   485    341882     444329.0      1.3      9.3              low_index = lowest_index + search_sorted
+   486                                                       # If the time stamp is the final one in S1 we break
+   487    341882     646310.0      1.9     13.5              if lowest_index >= len(S1_times) - 1 or low_index >= len(S1_times): 
+   488         1          1.0      1.0      0.0                  finished = True
+   489         1          1.0      1.0      0.0                  break
+   490                                                   
+   491                                                       # If the time stamp in S1 is beyond the window we go to next S2 time (there are no more time stamps within this window)
+   492    341881     550008.0      1.6     11.5              if S1_times[low_index] >= w_high[i]: break
+   493                                                       # If the time stamp in S1 is before the window check the next time stamp    
+   494    145858     196921.0      1.4      4.1              if S1_times[low_index] <= w_low[i]: 
+   495                                                           search_sorted += 1
+   496                                                           continue
+   497                                                   
+   498                                                       # If there is an event we calculate the time difference
+   499    145858     248661.0      1.7      5.2              dt[counter] =  S2_times[i] - S1_times[low_index]
+   500                                                       # Save the S1 and S2 index of the event
+   501    145858     239676.0      1.6      5.0              ind[counter][0] = low_index
+   502    145858     200497.0      1.4      4.2              ind[counter][1] = i
+   503    145858     139744.0      1.0      2.9              counter += 1
+   504    145858     127324.0      0.9      2.7              search_sorted += 1
+   505    196024     173041.0      0.9      3.6          if finished: break
+   506                                               
+   507                                               # Find and remove all fails from dt
+   508         1       3680.0   3680.0      0.1      dtx = dt[(dt != -9999)]
+   509                                           
+   510         1       6542.0   6542.0      0.1      ind_S1 = ind[:, 0][ind[:, 0] != -9999]
+   511         1       2867.0   2867.0      0.1      ind_S2 = ind[:, 1][ind[:, 1] != -9999]
+   512                                           
+   513         1          2.0      2.0      0.0      if timer: elapsed_time(t_start, 'sTOF4()')
+   514         1          1.0      1.0      0.0      if return_indices:
+   515                                                   indx = np.array([ind_S1, ind_S2], dtype = 'int')
+   516                                                   return dtx, indx
+   517         1          1.0      1.0      0.0      else: return dtx
+

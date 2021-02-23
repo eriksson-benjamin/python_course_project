@@ -213,6 +213,7 @@ def remove_led(time_stamps, timer = False):
     if timer: elapsed_time(t_start, 'remove_led()')
     return time_stamps[0:led_start - 10], led_start - 10
 
+#@profile
 def find_threshold(pulse_data, trig_level, timer = False, detector_name = 'None'):
     '''
     Finds the point in the pulse which crosses the trigger level (generally 16, 17, 18 or 19 ns for ADQ14).
@@ -337,6 +338,7 @@ def sinc_interpolation(pulse_data, x_values, ux_values, timer = False):
 #    if timer: elapsed_time(t_start, 'time_pickoff_CFD()')
 #    return new_time
 
+#@profile
 def time_pickoff_CFD(pulse_data, fraction = 0.3, timer = False):
     '''
     Returns the times of arrival for a 2D array of pulses using a constant
@@ -449,7 +451,7 @@ def find_points(pulse_data, value, timer = False):
     if timer: elapsed_time(t_start, 'find_points()')
     return index   
     
-
+#@profile
 def sTOF4(S1_times, S2_times, t_back = 100, t_forward = 100, return_indices = False, timer = False):
 
     '''
@@ -514,7 +516,8 @@ def sTOF4(S1_times, S2_times, t_back = 100, t_forward = 100, return_indices = Fa
         return dtx, indx
     else: return dtx
     
- 
+
+    
 
 def get_detector_name(board, channel, timer = False):
     '''
@@ -598,6 +601,7 @@ def get_shifts(shift_file, timer = False):
     if timer: elapsed_time(t_start, 'get_shifts()')
     return shifts
 
+#@profile
 def get_pulse_area(pulses, u_factor, timer = False):
     '''
     Returns the areas under an array of pulses
