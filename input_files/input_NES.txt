@@ -1,0 +1,17 @@
+#--JPN 98648
+--disable-bgs
+--disable-cuts
+--disable-detectors S2_23,S2_24,S2_25,S2_26
+#--enable-detectors
+#--ohmic-spectrum
+#--remove-doubles 0
+#--run-timer
+#--save-data my_data.pickle
+#--save-NES /home/beriksso/TOFu/analysis/benjamin/other/HTPD/pickles/yn_ne/upper_lower/lower_96990.pickle
+--save-NES /home/beriksso/TT_calibration_08ns.pickle
+--sum-shots 98682 98683 98684 98685 98686 98687 98688 98689
+#--time-range 48 53
+#--time-range-file /home/beriksso/TOFu/analysis/benjamin/time_range_files/yn_ne/upper_lower/lower/lower_96990.txt
+#--1D-spectrum
+#--set-thresholds 0.045
+--disable-scratch
