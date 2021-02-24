@@ -474,12 +474,12 @@ def sTOF4(S1_times, S2_times, t_back = 100, t_forward = 100, return_indices = Fa
     ind = -9999 * np.ones([5 * len(S2_times), 2])
     counter = 0
     finished = False
-    
+    lowest_indices = np.searchsorted(S1_times, w_low)
+
     for i in range(0, len(S2_times)):
-        
+        lowest_index = lowest_indices[i]
         search_sorted = 0
         # Find the time stamp in S1 closest to wLow (rounded up, i.e. just outside the window)
-        lowest_index = np.searchsorted(S1_times, w_low[i])
         while True:
             # Increase to next event
             low_index = lowest_index + search_sorted

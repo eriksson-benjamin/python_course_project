@@ -1,0 +1,24 @@
+coincidences == C_coincidences: True
+Wrote profile results to time_profiler.py.lprof
+Timer unit: 1e-06 s
+
+Total time: 2.09797 s
+File: time_profiler.py
+Function: not_cythonized at line 15
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    15                                           @profile
+    16                                           def not_cythonized():
+    17         1    2097969.0 2097969.0    100.0      coincidences = dfs.sTOF4(times_S1, times_S2)
+
+Total time: 0.131555 s
+File: time_profiler.py
+Function: cythonized at line 19
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    19                                           @profile
+    20                                           def cythonized():
+    21         1     131555.0 131555.0    100.0          coincidences = CyTOF.CyTOF(times_S1, times_S2, t_forward = 100, t_back = 100)
+

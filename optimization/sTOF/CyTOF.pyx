@@ -27,23 +27,21 @@ def CyTOF(np.ndarray[np.float64_t, ndim = 1] S1_times, np.ndarray[np.float64_t, 
     
     n_S1 = S1_times.shape[0]
     n_S2 = S2_times.shape[0]
-    cdef np.ndarray[np.int64_t, ndim = 2] ind  = np.empty([5 * n_S2, 5 * n_S2])
-    cdef np.ndarray[np.float64_t, ndim = 1] dt = np.empty(5 * n_S2)
+    cdef np.ndarray[np.int64_t, ndim = 2] ind  = numpy.ones([5*n_S2, 2], dtype = 'int64')
+    cdef np.ndarray[np.float64_t, ndim = 1] dt = numpy.ones(5*n_S2, dtype = 'float64')
 
-    
     # Define time windows
     w_low = S2_times - t_back
     w_high = S2_times + t_forward
     
-  
     counter = 0
     finished = False
 
+    lowest_indices = numpy.searchsorted(S1_times, w_low)
     for i in range(0, n_S2):
-        
         search_sorted = 0
         # Find the time stamp in S1 closest to wLow (rounded up, i.e. just outside the window)
-        lowest_index = numpy.searchsorted(S1_times, w_low[i])
+        lowest_index = lowest_indices[i]
         while True:
             # Increase to next event
             low_index = lowest_index + search_sorted

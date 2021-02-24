@@ -10,7 +10,16 @@ import sys
 sys.path.insert(0, '../functions/')
 import tofu_functions as dfs
 import pickle
-import CyTOF
+from sTOF import CyTOF
+#import CyTOF
+import numpy as np
+@profile
+def not_cythonized():
+    coincidences = dfs.sTOF4(times_S1, times_S2)
+    
+@profile
+def cythonized():
+        coincidences = CyTOF.CyTOF(times_S1, times_S2, t_forward = 100, t_back = 100)
 
 # Load local data
 with open('/common/scratch/beriksso/TOFu/optimization/pulses.pickle', 'rb') as handle:
@@ -23,6 +32,7 @@ times_S1 = time_stamps['S1_05']
 times_S2 = time_stamps['S2_05']
 
 # Time profiling of sTOF() function
-#coincidences = dfs.sTOF4(times_S1, times_S2)
+coincidences = not_cythonized()
+C_coincidences = cythonized()
 
-coincidences = CyTOF.CyTOF(times_S1, times_S2, t_forward = 100, t_back = 100)
+print(f'coincidences == C_coincidences: {np.all(coincidences == C_coincidences)}')
