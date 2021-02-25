@@ -21,14 +21,45 @@ import CyTOF
 def get_pulses(board, channel, shot_number, pulse_start = -1, pulse_end = -1, timer = False):
     '''
     Returns pulse data for a given board, channel and shot number.
-    Example how to call: data = get_pulses('04', 'A', 94206) 
+    
+    Parameters
+    ----------
+    board : int or string
+          Board number (between 1-10) for requested data.
+    channel : string
+            Channel name for requested data (A, B, C or D).
+    shot_number : int or string
+                JET pulse number.
+    pulse_start : int, optional
+                Index before which pulses are not returned.
+    pulse_end : int, optional
+              Index after which pulses are not returned.
+    timer : bool, optional
+          If set to True, prints the time to execute the function.
+    
+    Returns
+    -------
+    pulses : ndarray
+           2D array of pulse waveforms where each row corresponds to one pulse. 
+           Typically 64 samples in each row for ADQ14 (board 1-5) and 56
+           samples for ADQ412 (board 6-10).
+           
+    Examples
+    --------
+    >>> get_pulses(4, 'A', 94206)
+    array([[29996, 29978, 30005, ..., 29911, 29938, 29929],
+           ...,
+           [29978, 29969, 29955, ..., 29884, 29920, 29920]], dtype=int16)    
     '''
+    
     if timer: t_start = elapsed_time()
-    file_name = 'M11D-B' + board + '<DT' + channel
+    if int(board) < 10: board = f'0{int(board)}'
+    
+    file_name = f'M11D-B{board}<DT{channel}'
     
     # Record length is 64 for ADQ14 and 56 for ADQ412
-    if   board in ('01', '02', '03', '04', '05'): record_length = 64
-    elif board in ('06', '07', '08', '09', '10'): record_length = 56
+    if   int(board) <= 5: record_length = 64
+    elif int(board) > 5: record_length = 56
     else: 
         raise Exception('Wrong function call. Example call: data = get_pulses(\'04\', \'A\', 94206)')
     
@@ -40,30 +71,63 @@ def get_pulses(board, channel, shot_number, pulse_start = -1, pulse_end = -1, ti
     pulse_data.dtype = np.int16
 
   
-#    # Get pulse data
-#    pulse_data = gd.getbyte(file_name, shot_number)[0]
-#    pulse_data.dtype = np.int16
-#    
     # Reshape pulse data
     if len(pulse_data) % record_length != 0: 
         raise Exception('Error: Number of records could not be calculated for record length of 64 samples.')
 
     if timer: elapsed_time(t_start, 'get_pulses()')
-    return np.reshape(pulse_data, [int(len(pulse_data) / record_length), record_length])
+    
+    pulses = np.reshape(pulse_data, [int(len(pulse_data) / record_length), record_length])
+    return pulses
        
 def get_times(shot_number, board = 'N/A', channel = 'N/A', detector_name = 'N/A', timer = False):
     '''
-    Returns time stamps for given board, channel and shot number in nanoseconds.
-    Example how to call: times = get_times('02', 'B', 94206)
+    Returns trigger time stamps for pulses on given board, channel and shot 
+    number in nanoseconds since board initialization.
+    
+    Parameters
+    ----------
+    shot_number : int or string
+                JET pulse number.
+    board : int or string, optional
+          Board number (between 1-10) for requested data. Must be given if
+          detector_name is not.
+    channel : string, optional
+            Channel name for requested data (A, B, C or D). Must be given if 
+            detector_name is not.
+    detector_name : string, optional
+                  Detector name for requested data. Must be given if board and
+                  channel are not. E.g. "S1_01", "S1_02", "S2_01", "S2_02" etc.
+    timer : bool, optional
+          If set to True, prints the time to execute the function.
+    
+    Returns
+    -------
+    time_stamps : ndarray
+                1D array of time stamps.
+           
+    Examples
+    --------
+    >>> get_times(97100, 2, 'B')
+    array([9.48831445e+17, 9.48514788e+17, 9.42146327e+17, ...,
+           9.46685159e+17, 9.48022189e+17, 9.47670333e+17])
+    >>> get_times(97100, detector_name = 'S2_04')
+    array([9.48831445e+17, 9.48514788e+17, 9.42146327e+17, ...,
+           9.46685159e+17, 9.48022189e+17, 9.47670333e+17])
     '''
+    
+
     if timer: t_start = elapsed_time()
     if detector_name != 'N/A': board, channel = get_board_name(detector_name)
-    file_name = 'M11D-B' + board + '<TM' + channel
+    
+    if int(board) < 10: board = f'0{int(board)}'
+    file_name = f'M11D-B{board}<DT{channel}'
+    
 
     # For ADQ14 time stamps are multiplied by 0.125 to return in ns
     # For ADQ412 time stamps are multiplied by 0.5 to return in ns
-    if   board in ('01', '02', '03', '04', '05'): mult_factor = 0.125
-    elif board in ('06', '07', '08', '09', '10'): mult_factor = 0.5
+    if   int(board) <= 5: mult_factor = 0.125
+    elif int(board) > 5: mult_factor = 0.5
     else:
         print('Wrong function call. Example call: data = get_pulses(\'04\', \'A\', 94206)')
         return 0
@@ -78,14 +142,38 @@ def get_times(shot_number, board = 'N/A', channel = 'N/A', detector_name = 'N/A'
 
 def get_offset(board, shot_number, timer = False):
     '''
-    Returns offsets for given ADQ412 board, channel and shot number.
-    Example how to call: offsets = get_offset('07', 94206)
+    Returns the time from board initialization to JET PRE for given board and 
+    shot number in nanoseconds. Required to align the time stamp trains for 
+    ADQ412 boards.
+
+    Parameters
+    ----------
+    board : int or string
+          Board number (between 6-10) for requested time offset.
+    shot_number : int or string
+                JET pulse number.
+    timer : bool, optional
+          If set to True, prints the time to execute the function.
+          
+    Returns
+    -------
+    offset : int
+           Nanoseconds between board initialization and JET PRE.
+    
+    Examples
+    --------
+    >>> get_offset(6, 97100)
+    144185503141
+    >>> get_offset(10, 94800)
+    92176638652
     '''
     if timer: t_start = elapsed_time()
-    file_name = 'M11D-B' + board + '<OFF' 
-    if board not in ('06', '07', '08', '09', '10'):
-        print('Offsets are only available for the ADQ412 cards (i.e. boards 06, 07, 08, 09 and 10)')
-        return 0
+    if int(board) < 10: board = f'0{int(board)}'
+        
+    
+    file_name = f'M11D-B{board}<OFF' 
+    if int(board) < 6:
+        raise Exception('Offsets are only available for the ADQ412 cards (i.e. boards 6, 7, 8, 9 and 10)')
     
     # Get offset
     offset = gd.getbyte(file_name, shot_number)[0]
@@ -93,8 +181,7 @@ def get_offset(board, shot_number, timer = False):
     
     if timer: elapsed_time(t_start, 'get_offset()')
     if len(offset) == 0: 
-        print('get_offset() failed to retrieve offset value.')
-        return [] 
+        raise Exception('get_offset() failed to retrieve offset value.')
     return offset[0]
     
 def get_temperatures(board, shot_number, timer = False):
@@ -295,53 +382,6 @@ def sinc_interpolation(pulse_data, x_values, ux_values, timer = False):
     if timer: elapsed_time(t_start, 'sinc_interpolation()')
     return u_pulse_data
     
-#def time_pickoff_CFD(pulse_data, fraction = 0.3, timer = False):
-#    '''
-#    
-#    '''
-#    if timer: t_start = elapsed_time()
-#    
-#    # Find the minima and a fraction of the minima
-#    minima = np.min(pulse_data, axis = 1)
-#    minima_fraction = minima * fraction
-#    # Find position of minimum
-##    minima_pos = np.argmin(pulse_data, axis = 1)
-##    print('Warning: ' + str(len(minima_pos[minima_pos < 100])) + ' pulses have minimum before 10 ns.')
-#    
-#
-#    # Find the index of the point closest to the fraction of the minimum
-#    # Look only in the first 25 ns (leading edge) of the pulse
-#    x_closest = find_points(pulse_data[:, 0:250], minima_fraction, timer = timer)
-#
-#
-#    # Set up for simple linear regression
-#    reg_x = np.zeros([len(x_closest), 3])
-#    reg_y = np.zeros([len(x_closest), 3])
-#    array_1D = np.arange(0, len(pulse_data), 1)
-#    
-#    # Choose the three points on which to perform simple linear regression
-#    reg_y[:, 0] = pulse_data[array_1D, x_closest - 1]
-#    reg_y[:, 1] = pulse_data[array_1D, x_closest]
-#    reg_y[:, 2] = pulse_data[array_1D, x_closest + 1]
-#
-##    reg_y[:, 0] = pulse_data[array_1D, x_closest - 2]
-##    reg_y[:, 1] = pulse_data[array_1D, x_closest - 1]
-##    reg_y[:, 2] = pulse_data[array_1D, x_closest]
-#
-#    reg_x[:, 0] = x_closest - 1
-#    reg_x[:, 1] = x_closest
-#    reg_x[:, 2] = x_closest + 1
-#    
-#    # Perform simple linear regression
-#    slopes, intercepts = linear_regression(reg_x, reg_y, timer = timer)
-#    
-#    # Solve the y = kx + m equation for x. y = minima_fraction
-#    new_time = (minima_fraction - intercepts) / slopes
-#    
-#    if timer: elapsed_time(t_start, 'time_pickoff_CFD()')
-#    return new_time
-
-#@profile
 def time_pickoff_CFD(pulse_data, fraction = 0.3, timer = False):
     '''
     Returns the times of arrival for a 2D array of pulses using a constant
@@ -615,7 +655,6 @@ def get_shifts(shift_file, timer = False):
     if timer: elapsed_time(t_start, 'get_shifts()')
     return shifts
 
-#@profile
 def get_pulse_area(pulses, u_factor, timer = False):
     '''
     Returns the areas under an array of pulses

@@ -60,9 +60,7 @@ def get_doubles(arguments):
     if a not in enabled_detectors or b not in enabled_detectors: return np.array([])
     s1_a = S1_times[a]
     s1_b = S1_times[b]
-    t_test = dfs.elapsed_time()
     _, inds = dfs.sTOF4(np.array(s1_a), np.array(s1_b), t_back = 10, t_forward = 10, return_indices = True, timer = timer_level)
-    dfs.elapsed_time(t_test, 'First call')
     print(f'{a}, {b} done.')
     return inds
 
@@ -83,9 +81,7 @@ def get_tof(arguments):
     
     s1_times = arguments[1][s1]
     s2_times = arguments[1][s2]
-    t_test = dfs.elapsed_time()
     tof, inds = dfs.sTOF4(s1_times, s2_times, t_back = time_window, t_forward = time_window, return_indices = True, timer = timer_level)
-    dfs.elapsed_time(t_test, 'Second call')
 
     return tof, inds, s1, s2
 
@@ -587,10 +583,10 @@ if __name__=="__main__":
             # Dictionary to store coincidences in
             coincidences_raw = dfs.get_dictionaries('nested')
             indices_raw = dfs.get_dictionaries('nested')
-            print('Removing non-coincident pulses.')
+            print('\nRemoving non-coincident pulses.')
             with mp.Pool(available_cpu) as pool_tof:
                 tof_info = pool_tof.map(get_tof, tof_argu)
-                
+            
             # Only keep time stamps and pulses which produce coincidences
             long_indices = dfs.get_dictionaries('merged')
             for ti in tof_info:
@@ -635,7 +631,6 @@ if __name__=="__main__":
                             'S1_02 S1_03', 'S1_02 S1_04', 'S1_02 S1_05',
                             'S1_03 S1_04', 'S1_03 S1_05',
                             'S1_04 S1_05']
-#                tof_argu = [[s1_combo, S1_times] for s1_combo in tof_argu]
                 
                 with mp.Pool(available_cpu) as pool_t:
                     coincidence_indices = pool_t.map(get_doubles, tof_argu) 
@@ -664,7 +659,7 @@ if __name__=="__main__":
                     for s1, ind in S1_indices.items():
                         time_stamps[s1] = time_stamps[s1][S1_indices[s1]]
                         pulses[s1] = pulses[s1][S1_indices[s1]]
-                    
+                
             print(f'\nTime range set to: {time_slice[0]:.2f} < t < {time_slice[1]:.2f}')
 
             # Run pulse waveform function
@@ -684,6 +679,7 @@ if __name__=="__main__":
             # Run on 16 cores
             with mp.Pool(available_cpu) as pool:
                 new_times = pool.map(create_TOF,  argu)
+            
             # Store results in dictionaries
             new_times_S1, new_times_S2 = dfs.get_dictionaries()
             energy_S1, energy_S2 = dfs.get_dictionaries()
@@ -723,7 +719,7 @@ if __name__=="__main__":
         # Check if figure is already open, if so close it
         if plt.fignum_exists(shot_number): plt.close(shot_number)
     
-        print('Generating TOF spectrum...')
+        print('\nGenerating TOF spectrum...')
             
         indices_S1 = np.array([])
         indices_S2 = np.array([])
@@ -748,7 +744,8 @@ if __name__=="__main__":
         coincidences_new = dfs.get_dictionaries('nested')
         indices_raw = dfs.get_dictionaries('nested')
         indices = dfs.get_dictionaries('nested')
-        energies = dfs.get_dictionaries('nested')
+        energies = dfs.get_dictionaries('nested')   
+        
         with mp.Pool(available_cpu) as pool_tof:
             tof_info = pool_tof.map(get_tof, tof_argu)
         
@@ -796,12 +793,12 @@ if __name__=="__main__":
         
         # Perform kinematic cuts
         if not disable_cuts: 
-            coincidences_cut, energies_S1_cut, energies_S2_cut = dfs.kinematic_cuts(coincidences, energies_S1, energies_S2, timer = True)
+            coincidences_cut, energies_S1_cut, energies_S2_cut = dfs.kinematic_cuts(coincidences, energies_S1, energies_S2, timer = time_level)
         else:
             coincidences_cut = 0
             energies_S1_cut  = 0
             energies_S2_cut  = 0
-            
+                
         dfs.elapsed_time(t_start, 'all boards')
         
         if not plot_1D:

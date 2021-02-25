@@ -35,4 +35,7 @@ times_S2 = time_stamps['S2_05']
 coincidences = not_cythonized()
 C_coincidences = cythonized()
 
+# Check that results are the same
 print(f'coincidences == C_coincidences: {np.all(coincidences == C_coincidences)}')
+
+

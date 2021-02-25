@@ -1,0 +1,590 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Welcome to TOFu analysis code documentation! &#8212; docs  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-tofu-analysis-code-documentation">
+<h1>Welcome to TOFu analysis code documentation!<a class="headerlink" href="#welcome-to-tofu-analysis-code-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-tofu_functions"></span><p>Created on Thu Jul 11 08:27:51 2019</p>
+<p>&#64;author: beriksso</p>
+<dl class="function">
+<dt id="tofu_functions.background_subtraction">
+<code class="descclassname">tofu_functions.</code><code class="descname">background_subtraction</code><span class="sig-paren">(</span><em>disable_cuts</em>, <em>TOF_hist</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.background_subtraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform background subtraction of TOF spectrum. If disable_cuts is true an average
+is calculated between -100ns to -50 ns. If disable_cuts is false a model is fit to
+the background and mirrored to the positive TOF side.
+disable_cuts: boolean from user input for disabling/enabling kinematic cuts
+TOF_hist: tuple of histogram information (events, bins)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.background_subtraction_">
+<code class="descclassname">tofu_functions.</code><code class="descname">background_subtraction_</code><span class="sig-paren">(</span><em>disable_cuts</em>, <em>TOF_hist</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.background_subtraction_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform background subtraction of TOF spectrum. If disable_cuts is true an average
+is calculated between -100ns to -50 ns. If disable_cuts is false a model is fit to
+the background and mirrored to the positive TOF side.
+disable_cuts: boolean from user input for disabling/enabling kinematic cuts
+TOF_hist: tuple of histogram information (events, bins)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.baseline_reduction">
+<code class="descclassname">tofu_functions.</code><code class="descname">baseline_reduction</code><span class="sig-paren">(</span><em>pulse_data</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.baseline_reduction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the same pulse data array with the base line at zero.
+pulse_data: array of pulse height data where each row corresponds to one record.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.cleanup">
+<code class="descclassname">tofu_functions.</code><code class="descname">cleanup</code><span class="sig-paren">(</span><em>pulses</em>, <em>dx</em>, <em>detector_name</em>, <em>bias_level</em>, <em>baseline_cut=array([0</em>, <em>0])</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.cleanup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes an array of baseline reduced pulses and removes junk pulses.
+pulses: array of baseline reduced pulses
+dx: distance between each point on the x-axis
+detector_name: string containing the name of the detector (‘S1_01’, …, ‘S2_32’)
+bias_level: value in codes where the baseline is expected (typically 27000 for ADQ14, 1600 for ADQ412)
+Example: new_pulses, junk_indices = cleanup(pulses)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.elapsed_time">
+<code class="descclassname">tofu_functions.</code><code class="descname">elapsed_time</code><span class="sig-paren">(</span><em>time_start=0.0</em>, <em>timed_function=''</em>, <em>return_time=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.elapsed_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optional timer for functions
+To start timer:</p>
+<blockquote>
+<div>t_start = elapsed_time()</div></blockquote>
+<dl class="docutils">
+<dt>To stop timer and print result:</dt>
+<dd>elapsed_time(t_start, ‘Function name’)</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.find_coincidences">
+<code class="descclassname">tofu_functions.</code><code class="descname">find_coincidences</code><span class="sig-paren">(</span><em>S1_times</em>, <em>S2_times</em>, <em>t_back=100</em>, <em>t_forward=100</em>, <em>return_indices=False</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.find_coincidences" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.find_ohmic_phase">
+<code class="descclassname">tofu_functions.</code><code class="descname">find_ohmic_phase</code><span class="sig-paren">(</span><em>shot_number</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.find_ohmic_phase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the time at which the Ohmic phase is over for given shot number.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.find_points">
+<code class="descclassname">tofu_functions.</code><code class="descname">find_points</code><span class="sig-paren">(</span><em>pulse_data</em>, <em>value</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.find_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the index of the point closest to “value” in pulse_data.
+pulse_data: array of pulse height data where each row corresponds to one record.</p>
+<blockquote>
+<div>NOTE: pulse_data must be baseline reduced (see baseline_reduction() function).</div></blockquote>
+<p>value: one dimensional array of values for which you want to find the closest index in pulse_data</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.find_threshold">
+<code class="descclassname">tofu_functions.</code><code class="descname">find_threshold</code><span class="sig-paren">(</span><em>pulse_data</em>, <em>trig_level</em>, <em>timer=False</em>, <em>detector_name='None'</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.find_threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the point in the pulse which crosses the trigger level (generally 16, 17, 18 or 19 ns for ADQ14).
+Mainly relevant for ADQ14 cards since the number of pre trigger samples varies.
+pulse_data: array of pulse height data where each row corresponds to one record.
+trig_level: trigger level used during acquisition of the data set</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.find_time_range">
+<code class="descclassname">tofu_functions.</code><code class="descname">find_time_range</code><span class="sig-paren">(</span><em>shot_number</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.find_time_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the time range for the analysis by using fission chamber data and
+calculating the time at which 99.5% of all neutron events have ocurred.
+Assumes shot start at 40 seconds.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.get_bias_level">
+<code class="descclassname">tofu_functions.</code><code class="descname">get_bias_level</code><span class="sig-paren">(</span><em>board</em>, <em>shot_number</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_bias_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the bias level for the given shot, board and channel.
+Example how to call: bias_level = get_bias_level(‘01’, ‘A’, 94207)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.get_board_name">
+<code class="descclassname">tofu_functions.</code><code class="descname">get_board_name</code><span class="sig-paren">(</span><em>detector_name</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_board_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the board and channel for the given detector name.
+Example: board, channel = get_board_name(detector_name = ‘S1_04’) returns board = ‘04’, channel = ‘A’</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.get_boards">
+<code class="descclassname">tofu_functions.</code><code class="descname">get_boards</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_boards" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an array of board names.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.get_channels">
+<code class="descclassname">tofu_functions.</code><code class="descname">get_channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an array of channel names.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.get_detector_name">
+<code class="descclassname">tofu_functions.</code><code class="descname">get_detector_name</code><span class="sig-paren">(</span><em>board</em>, <em>channel</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_detector_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the detector name corresponding to the given board and channel.
+The order of the S2’s on the ADQ412’s are sadly back to front :(
+Example: detector = get_detector_name(‘02’, ‘A’)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.get_dictionaries">
+<code class="descclassname">tofu_functions.</code><code class="descname">get_dictionaries</code><span class="sig-paren">(</span><em>S=0</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_dictionaries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns empty dictionaries for S1’s or S2’s which can be used to store data in.</p>
+<p>Set S = ‘S1’ for S1 dictionary
+Set S = ‘S2’ for S2 dictionary
+Set S = ‘merged’ for single dictionary with S1 and S2.
+Set S = ‘nested’ for S2 dictionary nested in S1 dictionary
+S = 0 returns both</p>
+<p>Example 1: S1_dict = get_dictionaries(‘S1’) returns S1_dict = {‘S1_01’: [], ‘S1_02’: [], ‘S1_03’: [], ‘S1_04’: [], ‘S1_05’: []}</p>
+<p>Example 2: S1_dict, S2_dict = get_dictionaries() returns both S1_dict = {‘S1_01’: [], …, ‘S1_05’: []} and S2_dict = {‘S2_01’: [], …, ‘S2_32’: []}</p>
+<p>Example 3: nested = get_dictionaries(‘nested’) returns nested = {‘S1_01’: {‘S2_01’: [], …, ‘S2_32’: []}, …, ‘S1_05’: {‘S2_01’: [], …, ‘S2_32’: []}}</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.get_energy_calibration">
+<code class="descclassname">tofu_functions.</code><code class="descname">get_energy_calibration</code><span class="sig-paren">(</span><em>areas</em>, <em>detector_name</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_energy_calibration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes an array of baseline reduced pulse areas and the detector type (S1_01 to S1_05 or S2_01 to S2_32) 
+and returns an array of corresponding deposited energy using the energy
+calibration given in energy_calibration_S1.txt and energy_calibration_S2.txt.
+Example: energy_array = get_energy_calibration(areas, detector_name = ‘S1_04’)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.get_kincut_function">
+<code class="descclassname">tofu_functions.</code><code class="descname">get_kincut_function</code><span class="sig-paren">(</span><em>tof</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_kincut_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes an array of times of flight [ns] and returns the corresponding maximal/minimal
+light yield for each time of flight in MeVee. 
+Input:</p>
+<blockquote>
+<div>tof: 1D array of times of flight [ns]</div></blockquote>
+<dl class="docutils">
+<dt>Output:</dt>
+<dd>E_S1_max: maximal energy in S1 for given time of flight [MeVee]
+E_S1_min: minimal energy in S1 for given time of flight [Mevee]
+E_S2_max: maximal energy in S2 for given time of flight [MeVee]</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.get_offset">
+<code class="descclassname">tofu_functions.</code><code class="descname">get_offset</code><span class="sig-paren">(</span><em>board</em>, <em>shot_number</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the time from board initialization to JET PRE for given board and 
+shot number in nanoseconds. Required to align the time stamp trains for 
+ADQ412 boards.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>board</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><p class="first last">Board number (between 6-10) for requested time offset.</p>
+</dd>
+<dt><strong>shot_number</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><p class="first last">JET pulse number.</p>
+</dd>
+<dt><strong>timer</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd><p class="first last">If set to True, prints the time to execute the function.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>offset</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Nanoseconds between board initialization and JET PRE.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_offset</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">97100</span><span class="p">)</span>
+<span class="go">144185503141</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_offset</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">94800</span><span class="p">)</span>
+<span class="go">92176638652</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.get_pre_trigger">
+<code class="descclassname">tofu_functions.</code><code class="descname">get_pre_trigger</code><span class="sig-paren">(</span><em>board</em>, <em>shot_number</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_pre_trigger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of pre trigger samples used for the given shot and board.
+Example how to call: trig_level = get_trigger_level(‘01’, ‘A’, 94207)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.get_pulse_area">
+<code class="descclassname">tofu_functions.</code><code class="descname">get_pulse_area</code><span class="sig-paren">(</span><em>pulses</em>, <em>u_factor</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_pulse_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the areas under an array of pulses
+pulses: m*n array of pulses
+u_factor: frequency of samples in each pulse (u_factor = 10 -&gt; 1/10 ns between each sample)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.get_pulses">
+<code class="descclassname">tofu_functions.</code><code class="descname">get_pulses</code><span class="sig-paren">(</span><em>board</em>, <em>channel</em>, <em>shot_number</em>, <em>pulse_start=-1</em>, <em>pulse_end=-1</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_pulses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns pulse data for a given board, channel and shot number.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>board</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><p class="first last">Board number (between 1-10) for requested data.</p>
+</dd>
+<dt><strong>channel</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Channel name for requested data (A, B, C or D).</p>
+</dd>
+<dt><strong>shot_number</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><p class="first last">JET pulse number.</p>
+</dd>
+<dt><strong>pulse_start</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Index before which pulses are not returned.</p>
+</dd>
+<dt><strong>pulse_end</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">Index after which pulses are not returned.</p>
+</dd>
+<dt><strong>timer</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd><p class="first last">If set to True, prints the time to execute the function.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>pulses</strong> <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
+<dd><p class="first last">2D array of pulse waveforms where each row corresponds to one pulse. 
+Typically 64 samples in each row for ADQ14 (board 1-5) and 56
+samples for ADQ412 (board 6-10).</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_pulses</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="mi">94206</span><span class="p">)</span>
+<span class="go">array([[29996, 29978, 30005, ..., 29911, 29938, 29929],</span>
+<span class="go">       ...,</span>
+<span class="go">       [29978, 29969, 29955, ..., 29884, 29920, 29920]], dtype=int16)    </span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.get_shifts">
+<code class="descclassname">tofu_functions.</code><code class="descname">get_shifts</code><span class="sig-paren">(</span><em>shift_file</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_shifts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the shifts (written in shift.txt) required to line up all S1-S2 combinations.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.get_temperatures">
+<code class="descclassname">tofu_functions.</code><code class="descname">get_temperatures</code><span class="sig-paren">(</span><em>board</em>, <em>shot_number</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_temperatures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns temperatures (deg C) at different locations on the ADQ412 and ADQ14 boards before and after acquisition.
+For ADQ412 five temperatures are returned, two of which are always 256, these temperature locations on the boards
+are not available for our cards. For ADQ14 seven temperatures are returned.
+For information on where the temperatures are measured see the function GetTemperature() in the ADQAPI manual.
+Example how to call: T_before, T_after = get_temperatures(‘04’, 94207)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.get_times">
+<code class="descclassname">tofu_functions.</code><code class="descname">get_times</code><span class="sig-paren">(</span><em>shot_number</em>, <em>board='N/A'</em>, <em>channel='N/A'</em>, <em>detector_name='N/A'</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_times" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns trigger time stamps for pulses on given board, channel and shot 
+number in nanoseconds since board initialization.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>shot_number</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><p class="first last">JET pulse number.</p>
+</dd>
+<dt><strong>board</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or string, optional</span></dt>
+<dd><p class="first last">Board number (between 1-10) for requested data. Must be given if
+detector_name is not.</p>
+</dd>
+<dt><strong>channel</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Channel name for requested data (A, B, C or D). Must be given if 
+detector_name is not.</p>
+</dd>
+<dt><strong>detector_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Detector name for requested data. Must be given if board and
+channel are not. E.g. “S1_01”, “S1_02”, “S2_01”, “S2_02” etc.</p>
+</dd>
+<dt><strong>timer</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd><p class="first last">If set to True, prints the time to execute the function.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>time_stamps</strong> <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
+<dd><p class="first last">1D array of time stamps.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_times</span><span class="p">(</span><span class="mi">97100</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">)</span>
+<span class="go">array([9.48831445e+17, 9.48514788e+17, 9.42146327e+17, ...,</span>
+<span class="go">       9.46685159e+17, 9.48022189e+17, 9.47670333e+17])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_times</span><span class="p">(</span><span class="mi">97100</span><span class="p">,</span> <span class="n">detector_name</span> <span class="o">=</span> <span class="s1">&#39;S2_04&#39;</span><span class="p">)</span>
+<span class="go">array([9.48831445e+17, 9.48514788e+17, 9.42146327e+17, ...,</span>
+<span class="go">       9.46685159e+17, 9.48022189e+17, 9.47670333e+17])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.get_trigger_level">
+<code class="descclassname">tofu_functions.</code><code class="descname">get_trigger_level</code><span class="sig-paren">(</span><em>board</em>, <em>channel</em>, <em>shot_number</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_trigger_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the trigger level used for the given shot, board and channel
+Example how to call: trig_level = get_trigger_level(‘01’, ‘A’, 94207)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.hist_1D_s">
+<code class="descclassname">tofu_functions.</code><code class="descname">hist_1D_s</code><span class="sig-paren">(</span><em>x_data</em>, <em>title=''</em>, <em>label='data set'</em>, <em>log=True</em>, <em>bins=0</em>, <em>ax=-1</em>, <em>normed=0</em>, <em>density=False</em>, <em>x_label='Time [ns]'</em>, <em>y_label=''</em>, <em>hist_type='step'</em>, <em>alpha=1</em>, <em>linewidth=1</em>, <em>color='k'</em>, <em>weights=None</em>, <em>linestyle='-'</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.hist_1D_s" title="Permalink to this definition">¶</a></dt>
+<dd><p>Example of how to use legend:
+fig = plt.figure(‘Time differences’)
+ax = fig.add_subplot(111)
+bins = np.linspace(0, 1.15 * np.max(dt_ADQ14), 1000)
+hist_1D_s(dt_ADQ412, label = ‘ADQ412’, log = True, bins = bins, x_label = ‘Time difference [ms]’, ax = ax)
+hist_1D_s(dt_ADQ14,  label = ‘ADQ14’,  log = True, bins = bins, x_label = ‘Time difference [ms]’, ax = ax)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.inverted_light_yield">
+<code class="descclassname">tofu_functions.</code><code class="descname">inverted_light_yield</code><span class="sig-paren">(</span><em>light_yield</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.inverted_light_yield" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes array of light yields in MeVee and translates to proton recoil using
+look-up table of the inverted light yield function from M. Gatu Johnson.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.kinematic_cuts">
+<code class="descclassname">tofu_functions.</code><code class="descname">kinematic_cuts</code><span class="sig-paren">(</span><em>tof</em>, <em>energy_S1</em>, <em>energy_S2</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.kinematic_cuts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs kinematic cuts on the times of flight vs. energy for S1’s and S2’s.
+Input:</p>
+<blockquote>
+<div>tof:       array of times of flight [ns]
+energy_S1: array of S1 energies [MeVee]
+energy_S2: array of S2 energies [MeVee]</div></blockquote>
+<dl class="docutils">
+<dt>Output:</dt>
+<dd>tof_cut:       1D array of times of flight with kinematic cuts applied
+energy_S1_cut: 1D array of energies for S1 with kinematic cuts applied
+energy_S2_cut: 1D array of energies for S2 with kinematic cuts applied</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.light_yield_function">
+<code class="descclassname">tofu_functions.</code><code class="descname">light_yield_function</code><span class="sig-paren">(</span><em>energy</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.light_yield_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes array of proton recoil energies in MeV and translates to light yield
+in MeVee using light yield function from M. Gatu Johnson thesis.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.linear_regression">
+<code class="descclassname">tofu_functions.</code><code class="descname">linear_regression</code><span class="sig-paren">(</span><em>x_data</em>, <em>y_data</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.linear_regression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the slope (A) and intersection (B) for a simple linear regression on x and y data.
+x_data: 2D array of values where each row corresponds to one event to perform linear regression on
+y_data: 2D array of values where each row corresponds to one event to perform linear regression on
+product_1, product_2 and product_3 correspond to the three products for calculating beta in 
+<a class="reference external" href="https://en.wikipedia.org/wiki/Simple_linear_regression">https://en.wikipedia.org/wiki/Simple_linear_regression</a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.plot_2D">
+<code class="descclassname">tofu_functions.</code><code class="descname">plot_2D</code><span class="sig-paren">(</span><em>times_of_flight, energy_S1, energy_S2, bins_tof=array([-199.8, -199.4, -199. , -198.6, -198.2, -197.8, -197.4, -197. ,        -196.6, -196.2, -195.8, -195.4, -195. , -194.6, -194.2, -193.8,        -193.4, -193. , -192.6, -192.2, -191.8, -191.4, -191. , -190.6,        -190.2, -189.8, -189.4, -189. , -188.6, -188.2, -187.8, -187.4,        -187. , -186.6, -186.2, -185.8, -185.4, -185. , -184.6, -184.2,        -183.8, -183.4, -183. , -182.6, -182.2, -181.8, -181.4, -181. ,        -180.6, -180.2, -179.8, -179.4, -179. , -178.6, -178.2, -177.8,        -177.4, -177. , -176.6, -176.2, -175.8, -175.4, -175. , -174.6,        -174.2, -173.8, -173.4, -173. , -172.6, -172.2, -171.8, -171.4,        -171. , -170.6, -170.2, -169.8, -169.4, -169. , -168.6, -168.2,        -167.8, -167.4, -167. , -166.6, -166.2, -165.8, -165.4, -165. ,        -164.6, -164.2, -163.8, -163.4, -163. , -162.6, -162.2, -161.8,        -161.4, -161. , -160.6, -160.2, -159.8, -159.4, -159. , -158.6,        -158.2, -157.8, -157.4, -157. , -156.6, -156.2, -155.8, -155.4,        -155. , -154.6, -154.2, -153.8, -153.4, -153. , -152.6, -152.2,        -151.8, -151.4, -151. , -150.6, -150.2, -149.8, -149.4, -149. ,        -148.6, -148.2, -147.8, -147.4, -147. , -146.6, -146.2, -145.8,        -145.4, -145. , -144.6, -144.2, -143.8, -143.4, -143. , -142.6,        -142.2, -141.8, -141.4, -141. , -140.6, -140.2, -139.8, -139.4,        -139. , -138.6, -138.2, -137.8, -137.4, -137. , -136.6, -136.2,        -135.8, -135.4, -135. , -134.6, -134.2, -133.8, -133.4, -133. ,        -132.6, -132.2, -131.8, -131.4, -131. , -130.6, -130.2, -129.8,        -129.4, -129. , -128.6, -128.2, -127.8, -127.4, -127. , -126.6,        -126.2, -125.8, -125.4, -125. , -124.6, -124.2, -123.8, -123.4,        -123. , -122.6, -122.2, -121.8, -121.4, -121. , -120.6, -120.2,        -119.8, -119.4, -119. , -118.6, -118.2, -117.8, -117.4, -117. ,        -116.6, -116.2, -115.8, -115.4, -115. , -114.6, -114.2, -113.8,        -113.4, -113. , -112.6, -112.2, -111.8, -111.4, -111. , -110.6,        -110.2, -109.8, -109.4, -109. , -108.6, -108.2, -107.8, -107.4,        -107. , -106.6, -106.2, -105.8, -105.4, -105. , -104.6, -104.2,        -103.8, -103.4, -103. , -102.6, -102.2, -101.8, -101.4, -101. ,        -100.6, -100.2,  -99.8,  -99.4,  -99. ,  -98.6,  -98.2,  -97.8,         -97.4,  -97. ,  -96.6,  -96.2,  -95.8,  -95.4,  -95. ,  -94.6,         -94.2,  -93.8,  -93.4,  -93. ,  -92.6,  -92.2,  -91.8,  -91.4,         -91. ,  -90.6,  -90.2,  -89.8,  -89.4,  -89. ,  -88.6,  -88.2,         -87.8,  -87.4,  -87. ,  -86.6,  -86.2,  -85.8,  -85.4,  -85. ,         -84.6,  -84.2,  -83.8,  -83.4,  -83. ,  -82.6,  -82.2,  -81.8,         -81.4,  -81. ,  -80.6,  -80.2,  -79.8,  -79.4,  -79. ,  -78.6,         -78.2,  -77.8,  -77.4,  -77. ,  -76.6,  -76.2,  -75.8,  -75.4,         -75. ,  -74.6,  -74.2,  -73.8,  -73.4,  -73. ,  -72.6,  -72.2,         -71.8,  -71.4,  -71. ,  -70.6,  -70.2,  -69.8,  -69.4,  -69. ,         -68.6,  -68.2,  -67.8,  -67.4,  -67. ,  -66.6,  -66.2,  -65.8,         -65.4,  -65. ,  -64.6,  -64.2,  -63.8,  -63.4,  -63. ,  -62.6,         -62.2,  -61.8,  -61.4,  -61. ,  -60.6,  -60.2,  -59.8,  -59.4,         -59. ,  -58.6,  -58.2,  -57.8,  -57.4,  -57. ,  -56.6,  -56.2,         -55.8,  -55.4,  -55. ,  -54.6,  -54.2,  -53.8,  -53.4,  -53. ,         -52.6,  -52.2,  -51.8,  -51.4,  -51. ,  -50.6,  -50.2,  -49.8,         -49.4,  -49. ,  -48.6,  -48.2,  -47.8,  -47.4,  -47. ,  -46.6,         -46.2,  -45.8,  -45.4,  -45. ,  -44.6,  -44.2,  -43.8,  -43.4,         -43. ,  -42.6,  -42.2,  -41.8,  -41.4,  -41. ,  -40.6,  -40.2,         -39.8,  -39.4,  -39. ,  -38.6,  -38.2,  -37.8,  -37.4,  -37. ,         -36.6,  -36.2,  -35.8,  -35.4,  -35. ,  -34.6,  -34.2,  -33.8,         -33.4,  -33. ,  -32.6,  -32.2,  -31.8,  -31.4,  -31. ,  -30.6,         -30.2,  -29.8,  -29.4,  -29. ,  -28.6,  -28.2,  -27.8,  -27.4,         -27. ,  -26.6,  -26.2,  -25.8,  -25.4,  -25. ,  -24.6,  -24.2,         -23.8,  -23.4,  -23. ,  -22.6,  -22.2,  -21.8,  -21.4,  -21. ,         -20.6,  -20.2,  -19.8,  -19.4,  -19. ,  -18.6,  -18.2,  -17.8,         -17.4,  -17. ,  -16.6,  -16.2,  -15.8,  -15.4,  -15. ,  -14.6,         -14.2,  -13.8,  -13.4,  -13. ,  -12.6,  -12.2,  -11.8,  -11.4,         -11. ,  -10.6,  -10.2,   -9.8,   -9.4,   -9. ,   -8.6,   -8.2,          -7.8,   -7.4,   -7. ,   -6.6,   -6.2,   -5.8,   -5.4,   -5. ,          -4.6,   -4.2,   -3.8,   -3.4,   -3. ,   -2.6,   -2.2,   -1.8,          -1.4,   -1. ,   -0.6,   -0.2,    0.2,    0.6,    1. ,    1.4,           1.8,    2.2,    2.6,    3. ,    3.4,    3.8,    4.2,    4.6,           5. ,    5.4,    5.8,    6.2,    6.6,    7. ,    7.4,    7.8,           8.2,    8.6,    9. ,    9.4,    9.8,   10.2,   10.6,   11. ,          11.4,   11.8,   12.2,   12.6,   13. ,   13.4,   13.8,   14.2,          14.6,   15. ,   15.4,   15.8,   16.2,   16.6,   17. ,   17.4,          17.8,   18.2,   18.6,   19. ,   19.4,   19.8,   20.2,   20.6,          21. ,   21.4,   21.8,   22.2,   22.6,   23. ,   23.4,   23.8,          24.2,   24.6,   25. ,   25.4,   25.8,   26.2,   26.6,   27. ,          27.4,   27.8,   28.2,   28.6,   29. ,   29.4,   29.8,   30.2,          30.6,   31. ,   31.4,   31.8,   32.2,   32.6,   33. ,   33.4,          33.8,   34.2,   34.6,   35. ,   35.4,   35.8,   36.2,   36.6,          37. ,   37.4,   37.8,   38.2,   38.6,   39. ,   39.4,   39.8,          40.2,   40.6,   41. ,   41.4,   41.8,   42.2,   42.6,   43. ,          43.4,   43.8,   44.2,   44.6,   45. ,   45.4,   45.8,   46.2,          46.6,   47. ,   47.4,   47.8,   48.2,   48.6,   49. ,   49.4,          49.8,   50.2,   50.6,   51. ,   51.4,   51.8,   52.2,   52.6,          53. ,   53.4,   53.8,   54.2,   54.6,   55. ,   55.4,   55.8,          56.2,   56.6,   57. ,   57.4,   57.8,   58.2,   58.6,   59. ,          59.4,   59.8,   60.2,   60.6,   61. ,   61.4,   61.8,   62.2,          62.6,   63. ,   63.4,   63.8,   64.2,   64.6,   65. ,   65.4,          65.8,   66.2,   66.6,   67. ,   67.4,   67.8,   68.2,   68.6,          69. ,   69.4,   69.8,   70.2,   70.6,   71. ,   71.4,   71.8,          72.2,   72.6,   73. ,   73.4,   73.8,   74.2,   74.6,   75. ,          75.4,   75.8,   76.2,   76.6,   77. ,   77.4,   77.8,   78.2,          78.6,   79. ,   79.4,   79.8,   80.2,   80.6,   81. ,   81.4,          81.8,   82.2,   82.6,   83. ,   83.4,   83.8,   84.2,   84.6,          85. ,   85.4,   85.8,   86.2,   86.6,   87. ,   87.4,   87.8,          88.2,   88.6,   89. ,   89.4,   89.8,   90.2,   90.6,   91. ,          91.4,   91.8,   92.2,   92.6,   93. ,   93.4,   93.8,   94.2,          94.6,   95. ,   95.4,   95.8,   96.2,   96.6,   97. ,   97.4,          97.8,   98.2,   98.6,   99. ,   99.4,   99.8,  100.2,  100.6,         101. ,  101.4,  101.8,  102.2,  102.6,  103. ,  103.4,  103.8,         104.2,  104.6,  105. ,  105.4,  105.8,  106.2,  106.6,  107. ,         107.4,  107.8,  108.2,  108.6,  109. ,  109.4,  109.8,  110.2,         110.6,  111. ,  111.4,  111.8,  112.2,  112.6,  113. ,  113.4,         113.8,  114.2,  114.6,  115. ,  115.4,  115.8,  116.2,  116.6,         117. ,  117.4,  117.8,  118.2,  118.6,  119. ,  119.4,  119.8,         120.2,  120.6,  121. ,  121.4,  121.8,  122.2,  122.6,  123. ,         123.4,  123.8,  124.2,  124.6,  125. ,  125.4,  125.8,  126.2,         126.6,  127. ,  127.4,  127.8,  128.2,  128.6,  129. ,  129.4,         129.8,  130.2,  130.6,  131. ,  131.4,  131.8,  132.2,  132.6,         133. ,  133.4,  133.8,  134.2,  134.6,  135. ,  135.4,  135.8,         136.2,  136.6,  137. ,  137.4,  137.8,  138.2,  138.6,  139. ,         139.4,  139.8,  140.2,  140.6,  141. ,  141.4,  141.8,  142.2,         142.6,  143. ,  143.4,  143.8,  144.2,  144.6,  145. ,  145.4,         145.8,  146.2,  146.6,  147. ,  147.4,  147.8,  148.2,  148.6,         149. ,  149.4,  149.8,  150.2,  150.6,  151. ,  151.4,  151.8,         152.2,  152.6,  153. ,  153.4,  153.8,  154.2,  154.6,  155. ,         155.4,  155.8,  156.2,  156.6,  157. ,  157.4,  157.8,  158.2,         158.6,  159. ,  159.4,  159.8,  160.2,  160.6,  161. ,  161.4,         161.8,  162.2,  162.6,  163. ,  163.4,  163.8,  164.2,  164.6,         165. ,  165.4,  165.8,  166.2,  166.6,  167. ,  167.4,  167.8,         168.2,  168.6,  169. ,  169.4,  169.8,  170.2,  170.6,  171. ,         171.4,  171.8,  172.2,  172.6,  173. ,  173.4,  173.8,  174.2,         174.6,  175. ,  175.4,  175.8,  176.2,  176.6,  177. ,  177.4,         177.8,  178.2,  178.6,  179. ,  179.4,  179.8,  180.2,  180.6,         181. ,  181.4,  181.8,  182.2,  182.6,  183. ,  183.4,  183.8,         184.2,  184.6,  185. ,  185.4,  185.8,  186.2,  186.6,  187. ,         187.4,  187.8,  188.2,  188.6,  189. ,  189.4,  189.8,  190.2,         190.6,  191. ,  191.4,  191.8,  192.2,  192.6,  193. ,  193.4,         193.8,  194.2,  194.6,  195. ,  195.4,  195.8,  196.2,  196.6,         197. ,  197.4,  197.8,  198.2,  198.6,  199. ,  199.4,  199.8]), bins_energy=array([-1.0000000e+00, -9.8000000e-01, -9.6000000e-01, -9.4000000e-01,        -9.2000000e-01, -9.0000000e-01, -8.8000000e-01, -8.6000000e-01,        -8.4000000e-01, -8.2000000e-01, -8.0000000e-01, -7.8000000e-01,        -7.6000000e-01, -7.4000000e-01, -7.2000000e-01, -7.0000000e-01,        -6.8000000e-01, -6.6000000e-01, -6.4000000e-01, -6.2000000e-01,        -6.0000000e-01, -5.8000000e-01, -5.6000000e-01, -5.4000000e-01,        -5.2000000e-01, -5.0000000e-01, -4.8000000e-01, -4.6000000e-01,        -4.4000000e-01, -4.2000000e-01, -4.0000000e-01, -3.8000000e-01,        -3.6000000e-01, -3.4000000e-01, -3.2000000e-01, -3.0000000e-01,        -2.8000000e-01, -2.6000000e-01, -2.4000000e-01, -2.2000000e-01,        -2.0000000e-01, -1.8000000e-01, -1.6000000e-01, -1.4000000e-01,        -1.2000000e-01, -1.0000000e-01, -8.0000000e-02, -6.0000000e-02,        -4.0000000e-02, -2.0000000e-02,  8.8817842e-16,  2.0000000e-02,         4.0000000e-02,  6.0000000e-02,  8.0000000e-02,  1.0000000e-01,         1.2000000e-01,  1.4000000e-01,  1.6000000e-01,  1.8000000e-01,         2.0000000e-01,  2.2000000e-01,  2.4000000e-01,  2.6000000e-01,         2.8000000e-01,  3.0000000e-01,  3.2000000e-01,  3.4000000e-01,         3.6000000e-01,  3.8000000e-01,  4.0000000e-01,  4.2000000e-01,         4.4000000e-01,  4.6000000e-01,  4.8000000e-01,  5.0000000e-01,         5.2000000e-01,  5.4000000e-01,  5.6000000e-01,  5.8000000e-01,         6.0000000e-01,  6.2000000e-01,  6.4000000e-01,  6.6000000e-01,         6.8000000e-01,  7.0000000e-01,  7.2000000e-01,  7.4000000e-01,         7.6000000e-01,  7.8000000e-01,  8.0000000e-01,  8.2000000e-01,         8.4000000e-01,  8.6000000e-01,  8.8000000e-01,  9.0000000e-01,         9.2000000e-01,  9.4000000e-01,  9.6000000e-01,  9.8000000e-01,         1.0000000e+00,  1.0200000e+00,  1.0400000e+00,  1.0600000e+00,         1.0800000e+00,  1.1000000e+00,  1.1200000e+00,  1.1400000e+00,         1.1600000e+00,  1.1800000e+00,  1.2000000e+00,  1.2200000e+00,         1.2400000e+00,  1.2600000e+00,  1.2800000e+00,  1.3000000e+00,         1.3200000e+00,  1.3400000e+00,  1.3600000e+00,  1.3800000e+00,         1.4000000e+00,  1.4200000e+00,  1.4400000e+00,  1.4600000e+00,         1.4800000e+00,  1.5000000e+00,  1.5200000e+00,  1.5400000e+00,         1.5600000e+00,  1.5800000e+00,  1.6000000e+00,  1.6200000e+00,         1.6400000e+00,  1.6600000e+00,  1.6800000e+00,  1.7000000e+00,         1.7200000e+00,  1.7400000e+00,  1.7600000e+00,  1.7800000e+00,         1.8000000e+00,  1.8200000e+00,  1.8400000e+00,  1.8600000e+00,         1.8800000e+00,  1.9000000e+00,  1.9200000e+00,  1.9400000e+00,         1.9600000e+00,  1.9800000e+00,  2.0000000e+00,  2.0200000e+00,         2.0400000e+00,  2.0600000e+00,  2.0800000e+00,  2.1000000e+00,         2.1200000e+00,  2.1400000e+00,  2.1600000e+00,  2.1800000e+00,         2.2000000e+00,  2.2200000e+00,  2.2400000e+00,  2.2600000e+00,         2.2800000e+00,  2.3000000e+00,  2.3200000e+00,  2.3400000e+00,         2.3600000e+00,  2.3800000e+00,  2.4000000e+00,  2.4200000e+00,         2.4400000e+00,  2.4600000e+00,  2.4800000e+00,  2.5000000e+00,         2.5200000e+00,  2.5400000e+00,  2.5600000e+00,  2.5800000e+00,         2.6000000e+00,  2.6200000e+00,  2.6400000e+00,  2.6600000e+00,         2.6800000e+00,  2.7000000e+00,  2.7200000e+00,  2.7400000e+00,         2.7600000e+00,  2.7800000e+00,  2.8000000e+00,  2.8200000e+00,         2.8400000e+00,  2.8600000e+00,  2.8800000e+00,  2.9000000e+00,         2.9200000e+00,  2.9400000e+00,  2.9600000e+00,  2.9800000e+00,         3.0000000e+00,  3.0200000e+00,  3.0400000e+00,  3.0600000e+00,         3.0800000e+00,  3.1000000e+00,  3.1200000e+00,  3.1400000e+00,         3.1600000e+00,  3.1800000e+00,  3.2000000e+00,  3.2200000e+00,         3.2400000e+00,  3.2600000e+00,  3.2800000e+00,  3.3000000e+00,         3.3200000e+00,  3.3400000e+00,  3.3600000e+00,  3.3800000e+00,         3.4000000e+00,  3.4200000e+00,  3.4400000e+00,  3.4600000e+00,         3.4800000e+00,  3.5000000e+00,  3.5200000e+00,  3.5400000e+00,         3.5600000e+00,  3.5800000e+00,  3.6000000e+00,  3.6200000e+00,         3.6400000e+00,  3.6600000e+00,  3.6800000e+00,  3.7000000e+00,         3.7200000e+00,  3.7400000e+00,  3.7600000e+00,  3.7800000e+00,         3.8000000e+00,  3.8200000e+00,  3.8400000e+00,  3.8600000e+00,         3.8800000e+00,  3.9000000e+00,  3.9200000e+00,  3.9400000e+00,         3.9600000e+00,  3.9800000e+00]), bins_2D=[array([-199.8, -199.4, -199. , -198.6, -198.2, -197.8, -197.4, -197. ,        -196.6, -196.2, -195.8, -195.4, -195. , -194.6, -194.2, -193.8,        -193.4, -193. , -192.6, -192.2, -191.8, -191.4, -191. , -190.6,        -190.2, -189.8, -189.4, -189. , -188.6, -188.2, -187.8, -187.4,        -187. , -186.6, -186.2, -185.8, -185.4, -185. , -184.6, -184.2,        -183.8, -183.4, -183. , -182.6, -182.2, -181.8, -181.4, -181. ,        -180.6, -180.2, -179.8, -179.4, -179. , -178.6, -178.2, -177.8,        -177.4, -177. , -176.6, -176.2, -175.8, -175.4, -175. , -174.6,        -174.2, -173.8, -173.4, -173. , -172.6, -172.2, -171.8, -171.4,        -171. , -170.6, -170.2, -169.8, -169.4, -169. , -168.6, -168.2,        -167.8, -167.4, -167. , -166.6, -166.2, -165.8, -165.4, -165. ,        -164.6, -164.2, -163.8, -163.4, -163. , -162.6, -162.2, -161.8,        -161.4, -161. , -160.6, -160.2, -159.8, -159.4, -159. , -158.6,        -158.2, -157.8, -157.4, -157. , -156.6, -156.2, -155.8, -155.4,        -155. , -154.6, -154.2, -153.8, -153.4, -153. , -152.6, -152.2,        -151.8, -151.4, -151. , -150.6, -150.2, -149.8, -149.4, -149. ,        -148.6, -148.2, -147.8, -147.4, -147. , -146.6, -146.2, -145.8,        -145.4, -145. , -144.6, -144.2, -143.8, -143.4, -143. , -142.6,        -142.2, -141.8, -141.4, -141. , -140.6, -140.2, -139.8, -139.4,        -139. , -138.6, -138.2, -137.8, -137.4, -137. , -136.6, -136.2,        -135.8, -135.4, -135. , -134.6, -134.2, -133.8, -133.4, -133. ,        -132.6, -132.2, -131.8, -131.4, -131. , -130.6, -130.2, -129.8,        -129.4, -129. , -128.6, -128.2, -127.8, -127.4, -127. , -126.6,        -126.2, -125.8, -125.4, -125. , -124.6, -124.2, -123.8, -123.4,        -123. , -122.6, -122.2, -121.8, -121.4, -121. , -120.6, -120.2,        -119.8, -119.4, -119. , -118.6, -118.2, -117.8, -117.4, -117. ,        -116.6, -116.2, -115.8, -115.4, -115. , -114.6, -114.2, -113.8,        -113.4, -113. , -112.6, -112.2, -111.8, -111.4, -111. , -110.6,        -110.2, -109.8, -109.4, -109. , -108.6, -108.2, -107.8, -107.4,        -107. , -106.6, -106.2, -105.8, -105.4, -105. , -104.6, -104.2,        -103.8, -103.4, -103. , -102.6, -102.2, -101.8, -101.4, -101. ,        -100.6, -100.2,  -99.8,  -99.4,  -99. ,  -98.6,  -98.2,  -97.8,         -97.4,  -97. ,  -96.6,  -96.2,  -95.8,  -95.4,  -95. ,  -94.6,         -94.2,  -93.8,  -93.4,  -93. ,  -92.6,  -92.2,  -91.8,  -91.4,         -91. ,  -90.6,  -90.2,  -89.8,  -89.4,  -89. ,  -88.6,  -88.2,         -87.8,  -87.4,  -87. ,  -86.6,  -86.2,  -85.8,  -85.4,  -85. ,         -84.6,  -84.2,  -83.8,  -83.4,  -83. ,  -82.6,  -82.2,  -81.8,         -81.4,  -81. ,  -80.6,  -80.2,  -79.8,  -79.4,  -79. ,  -78.6,         -78.2,  -77.8,  -77.4,  -77. ,  -76.6,  -76.2,  -75.8,  -75.4,         -75. ,  -74.6,  -74.2,  -73.8,  -73.4,  -73. ,  -72.6,  -72.2,         -71.8,  -71.4,  -71. ,  -70.6,  -70.2,  -69.8,  -69.4,  -69. ,         -68.6,  -68.2,  -67.8,  -67.4,  -67. ,  -66.6,  -66.2,  -65.8,         -65.4,  -65. ,  -64.6,  -64.2,  -63.8,  -63.4,  -63. ,  -62.6,         -62.2,  -61.8,  -61.4,  -61. ,  -60.6,  -60.2,  -59.8,  -59.4,         -59. ,  -58.6,  -58.2,  -57.8,  -57.4,  -57. ,  -56.6,  -56.2,         -55.8,  -55.4,  -55. ,  -54.6,  -54.2,  -53.8,  -53.4,  -53. ,         -52.6,  -52.2,  -51.8,  -51.4,  -51. ,  -50.6,  -50.2,  -49.8,         -49.4,  -49. ,  -48.6,  -48.2,  -47.8,  -47.4,  -47. ,  -46.6,         -46.2,  -45.8,  -45.4,  -45. ,  -44.6,  -44.2,  -43.8,  -43.4,         -43. ,  -42.6,  -42.2,  -41.8,  -41.4,  -41. ,  -40.6,  -40.2,         -39.8,  -39.4,  -39. ,  -38.6,  -38.2,  -37.8,  -37.4,  -37. ,         -36.6,  -36.2,  -35.8,  -35.4,  -35. ,  -34.6,  -34.2,  -33.8,         -33.4,  -33. ,  -32.6,  -32.2,  -31.8,  -31.4,  -31. ,  -30.6,         -30.2,  -29.8,  -29.4,  -29. ,  -28.6,  -28.2,  -27.8,  -27.4,         -27. ,  -26.6,  -26.2,  -25.8,  -25.4,  -25. ,  -24.6,  -24.2,         -23.8,  -23.4,  -23. ,  -22.6,  -22.2,  -21.8,  -21.4,  -21. ,         -20.6,  -20.2,  -19.8,  -19.4,  -19. ,  -18.6,  -18.2,  -17.8,         -17.4,  -17. ,  -16.6,  -16.2,  -15.8,  -15.4,  -15. ,  -14.6,         -14.2,  -13.8,  -13.4,  -13. ,  -12.6,  -12.2,  -11.8,  -11.4,         -11. ,  -10.6,  -10.2,   -9.8,   -9.4,   -9. ,   -8.6,   -8.2,          -7.8,   -7.4,   -7. ,   -6.6,   -6.2,   -5.8,   -5.4,   -5. ,          -4.6,   -4.2,   -3.8,   -3.4,   -3. ,   -2.6,   -2.2,   -1.8,          -1.4,   -1. ,   -0.6,   -0.2,    0.2,    0.6,    1. ,    1.4,           1.8,    2.2,    2.6,    3. ,    3.4,    3.8,    4.2,    4.6,           5. ,    5.4,    5.8,    6.2,    6.6,    7. ,    7.4,    7.8,           8.2,    8.6,    9. ,    9.4,    9.8,   10.2,   10.6,   11. ,          11.4,   11.8,   12.2,   12.6,   13. ,   13.4,   13.8,   14.2,          14.6,   15. ,   15.4,   15.8,   16.2,   16.6,   17. ,   17.4,          17.8,   18.2,   18.6,   19. ,   19.4,   19.8,   20.2,   20.6,          21. ,   21.4,   21.8,   22.2,   22.6,   23. ,   23.4,   23.8,          24.2,   24.6,   25. ,   25.4,   25.8,   26.2,   26.6,   27. ,          27.4,   27.8,   28.2,   28.6,   29. ,   29.4,   29.8,   30.2,          30.6,   31. ,   31.4,   31.8,   32.2,   32.6,   33. ,   33.4,          33.8,   34.2,   34.6,   35. ,   35.4,   35.8,   36.2,   36.6,          37. ,   37.4,   37.8,   38.2,   38.6,   39. ,   39.4,   39.8,          40.2,   40.6,   41. ,   41.4,   41.8,   42.2,   42.6,   43. ,          43.4,   43.8,   44.2,   44.6,   45. ,   45.4,   45.8,   46.2,          46.6,   47. ,   47.4,   47.8,   48.2,   48.6,   49. ,   49.4,          49.8,   50.2,   50.6,   51. ,   51.4,   51.8,   52.2,   52.6,          53. ,   53.4,   53.8,   54.2,   54.6,   55. ,   55.4,   55.8,          56.2,   56.6,   57. ,   57.4,   57.8,   58.2,   58.6,   59. ,          59.4,   59.8,   60.2,   60.6,   61. ,   61.4,   61.8,   62.2,          62.6,   63. ,   63.4,   63.8,   64.2,   64.6,   65. ,   65.4,          65.8,   66.2,   66.6,   67. ,   67.4,   67.8,   68.2,   68.6,          69. ,   69.4,   69.8,   70.2,   70.6,   71. ,   71.4,   71.8,          72.2,   72.6,   73. ,   73.4,   73.8,   74.2,   74.6,   75. ,          75.4,   75.8,   76.2,   76.6,   77. ,   77.4,   77.8,   78.2,          78.6,   79. ,   79.4,   79.8,   80.2,   80.6,   81. ,   81.4,          81.8,   82.2,   82.6,   83. ,   83.4,   83.8,   84.2,   84.6,          85. ,   85.4,   85.8,   86.2,   86.6,   87. ,   87.4,   87.8,          88.2,   88.6,   89. ,   89.4,   89.8,   90.2,   90.6,   91. ,          91.4,   91.8,   92.2,   92.6,   93. ,   93.4,   93.8,   94.2,          94.6,   95. ,   95.4,   95.8,   96.2,   96.6,   97. ,   97.4,          97.8,   98.2,   98.6,   99. ,   99.4,   99.8,  100.2,  100.6,         101. ,  101.4,  101.8,  102.2,  102.6,  103. ,  103.4,  103.8,         104.2,  104.6,  105. ,  105.4,  105.8,  106.2,  106.6,  107. ,         107.4,  107.8,  108.2,  108.6,  109. ,  109.4,  109.8,  110.2,         110.6,  111. ,  111.4,  111.8,  112.2,  112.6,  113. ,  113.4,         113.8,  114.2,  114.6,  115. ,  115.4,  115.8,  116.2,  116.6,         117. ,  117.4,  117.8,  118.2,  118.6,  119. ,  119.4,  119.8,         120.2,  120.6,  121. ,  121.4,  121.8,  122.2,  122.6,  123. ,         123.4,  123.8,  124.2,  124.6,  125. ,  125.4,  125.8,  126.2,         126.6,  127. ,  127.4,  127.8,  128.2,  128.6,  129. ,  129.4,         129.8,  130.2,  130.6,  131. ,  131.4,  131.8,  132.2,  132.6,         133. ,  133.4,  133.8,  134.2,  134.6,  135. ,  135.4,  135.8,         136.2,  136.6,  137. ,  137.4,  137.8,  138.2,  138.6,  139. ,         139.4,  139.8,  140.2,  140.6,  141. ,  141.4,  141.8,  142.2,         142.6,  143. ,  143.4,  143.8,  144.2,  144.6,  145. ,  145.4,         145.8,  146.2,  146.6,  147. ,  147.4,  147.8,  148.2,  148.6,         149. ,  149.4,  149.8,  150.2,  150.6,  151. ,  151.4,  151.8,         152.2,  152.6,  153. ,  153.4,  153.8,  154.2,  154.6,  155. ,         155.4,  155.8,  156.2,  156.6,  157. ,  157.4,  157.8,  158.2,         158.6,  159. ,  159.4,  159.8,  160.2,  160.6,  161. ,  161.4,         161.8,  162.2,  162.6,  163. ,  163.4,  163.8,  164.2,  164.6,         165. ,  165.4,  165.8,  166.2,  166.6,  167. ,  167.4,  167.8,         168.2,  168.6,  169. ,  169.4,  169.8,  170.2,  170.6,  171. ,         171.4,  171.8,  172.2,  172.6,  173. ,  173.4,  173.8,  174.2,         174.6,  175. ,  175.4,  175.8,  176.2,  176.6,  177. ,  177.4,         177.8,  178.2,  178.6,  179. ,  179.4,  179.8,  180.2,  180.6,         181. ,  181.4,  181.8,  182.2,  182.6,  183. ,  183.4,  183.8,         184.2,  184.6,  185. ,  185.4,  185.8,  186.2,  186.6,  187. ,         187.4,  187.8,  188.2,  188.6,  189. ,  189.4,  189.8,  190.2,         190.6,  191. ,  191.4,  191.8,  192.2,  192.6,  193. ,  193.4,         193.8,  194.2,  194.6,  195. ,  195.4,  195.8,  196.2,  196.6,         197. ,  197.4,  197.8,  198.2,  198.6,  199. ,  199.4,  199.8]), array([-1.0000000e+00, -9.8000000e-01, -9.6000000e-01, -9.4000000e-01,        -9.2000000e-01, -9.0000000e-01, -8.8000000e-01, -8.6000000e-01,        -8.4000000e-01, -8.2000000e-01, -8.0000000e-01, -7.8000000e-01,        -7.6000000e-01, -7.4000000e-01, -7.2000000e-01, -7.0000000e-01,        -6.8000000e-01, -6.6000000e-01, -6.4000000e-01, -6.2000000e-01,        -6.0000000e-01, -5.8000000e-01, -5.6000000e-01, -5.4000000e-01,        -5.2000000e-01, -5.0000000e-01, -4.8000000e-01, -4.6000000e-01,        -4.4000000e-01, -4.2000000e-01, -4.0000000e-01, -3.8000000e-01,        -3.6000000e-01, -3.4000000e-01, -3.2000000e-01, -3.0000000e-01,        -2.8000000e-01, -2.6000000e-01, -2.4000000e-01, -2.2000000e-01,        -2.0000000e-01, -1.8000000e-01, -1.6000000e-01, -1.4000000e-01,        -1.2000000e-01, -1.0000000e-01, -8.0000000e-02, -6.0000000e-02,        -4.0000000e-02, -2.0000000e-02,  8.8817842e-16,  2.0000000e-02,         4.0000000e-02,  6.0000000e-02,  8.0000000e-02,  1.0000000e-01,         1.2000000e-01,  1.4000000e-01,  1.6000000e-01,  1.8000000e-01,         2.0000000e-01,  2.2000000e-01,  2.4000000e-01,  2.6000000e-01,         2.8000000e-01,  3.0000000e-01,  3.2000000e-01,  3.4000000e-01,         3.6000000e-01,  3.8000000e-01,  4.0000000e-01,  4.2000000e-01,         4.4000000e-01,  4.6000000e-01,  4.8000000e-01,  5.0000000e-01,         5.2000000e-01,  5.4000000e-01,  5.6000000e-01,  5.8000000e-01,         6.0000000e-01,  6.2000000e-01,  6.4000000e-01,  6.6000000e-01,         6.8000000e-01,  7.0000000e-01,  7.2000000e-01,  7.4000000e-01,         7.6000000e-01,  7.8000000e-01,  8.0000000e-01,  8.2000000e-01,         8.4000000e-01,  8.6000000e-01,  8.8000000e-01,  9.0000000e-01,         9.2000000e-01,  9.4000000e-01,  9.6000000e-01,  9.8000000e-01,         1.0000000e+00,  1.0200000e+00,  1.0400000e+00,  1.0600000e+00,         1.0800000e+00,  1.1000000e+00,  1.1200000e+00,  1.1400000e+00,         1.1600000e+00,  1.1800000e+00,  1.2000000e+00,  1.2200000e+00,         1.2400000e+00,  1.2600000e+00,  1.2800000e+00,  1.3000000e+00,         1.3200000e+00,  1.3400000e+00,  1.3600000e+00,  1.3800000e+00,         1.4000000e+00,  1.4200000e+00,  1.4400000e+00,  1.4600000e+00,         1.4800000e+00,  1.5000000e+00,  1.5200000e+00,  1.5400000e+00,         1.5600000e+00,  1.5800000e+00,  1.6000000e+00,  1.6200000e+00,         1.6400000e+00,  1.6600000e+00,  1.6800000e+00,  1.7000000e+00,         1.7200000e+00,  1.7400000e+00,  1.7600000e+00,  1.7800000e+00,         1.8000000e+00,  1.8200000e+00,  1.8400000e+00,  1.8600000e+00,         1.8800000e+00,  1.9000000e+00,  1.9200000e+00,  1.9400000e+00,         1.9600000e+00,  1.9800000e+00,  2.0000000e+00,  2.0200000e+00,         2.0400000e+00,  2.0600000e+00,  2.0800000e+00,  2.1000000e+00,         2.1200000e+00,  2.1400000e+00,  2.1600000e+00,  2.1800000e+00,         2.2000000e+00,  2.2200000e+00,  2.2400000e+00,  2.2600000e+00,         2.2800000e+00,  2.3000000e+00,  2.3200000e+00,  2.3400000e+00,         2.3600000e+00,  2.3800000e+00,  2.4000000e+00,  2.4200000e+00,         2.4400000e+00,  2.4600000e+00,  2.4800000e+00,  2.5000000e+00,         2.5200000e+00,  2.5400000e+00,  2.5600000e+00,  2.5800000e+00,         2.6000000e+00,  2.6200000e+00,  2.6400000e+00,  2.6600000e+00,         2.6800000e+00,  2.7000000e+00,  2.7200000e+00,  2.7400000e+00,         2.7600000e+00,  2.7800000e+00,  2.8000000e+00,  2.8200000e+00,         2.8400000e+00,  2.8600000e+00,  2.8800000e+00,  2.9000000e+00,         2.9200000e+00,  2.9400000e+00,  2.9600000e+00,  2.9800000e+00,         3.0000000e+00,  3.0200000e+00,  3.0400000e+00,  3.0600000e+00,         3.0800000e+00,  3.1000000e+00,  3.1200000e+00,  3.1400000e+00,         3.1600000e+00,  3.1800000e+00,  3.2000000e+00,  3.2200000e+00,         3.2400000e+00,  3.2600000e+00,  3.2800000e+00,  3.3000000e+00,         3.3200000e+00,  3.3400000e+00,  3.3600000e+00,  3.3800000e+00,         3.4000000e+00,  3.4200000e+00,  3.4400000e+00,  3.4600000e+00,         3.4800000e+00,  3.5000000e+00,  3.5200000e+00,  3.5400000e+00,         3.5600000e+00,  3.5800000e+00,  3.6000000e+00,  3.6200000e+00,         3.6400000e+00,  3.6600000e+00,  3.6800000e+00,  3.7000000e+00,         3.7200000e+00,  3.7400000e+00,  3.7600000e+00,  3.7800000e+00,         3.8000000e+00,  3.8200000e+00,  3.8400000e+00,  3.8600000e+00,         3.8800000e+00,  3.9000000e+00,  3.9200000e+00,  3.9400000e+00,         3.9600000e+00,  3.9800000e+00])], energy_lim=array([-0.1,  2. ]), tof_lim=array([-150,  200]), title='', log=True, interactive_plot=False, projection=0, disable_cuts=False, times_of_flight_cut=0, energy_S1_cut=0, energy_S2_cut=0, disable_bgs=False, weights=False, hist2D_S1=None, hist2D_S2=None, sum_shots=False, proton_recoil=False, timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.plot_2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots 2D histogram of TOF vs energy with projections onto time and energy axis.
+Returns nothing.
+times_of_flight: 1D array of times of flight.
+energy_S1: 1D array of energies for S1
+energy_S2: 1D array of energies for S2
+bins_tof: bins for 1D time of flight spectrum
+bins_energy: bins for 1D energy spectrum
+bins_2D: bins for 2D spectrum of energy vs. time of flight
+energy_lim: set energy plotting limits
+title: title
+log: set log scale
+interactive_plot: set to true to set cuts in each spectrum
+projection: used in replot_projections() function, allows for red lines to be plotted along the limits of the cuts</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.remove_led">
+<code class="descclassname">tofu_functions.</code><code class="descname">remove_led</code><span class="sig-paren">(</span><em>time_stamps</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.remove_led" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the same time stamps back without the LED chunk at the end and the position where the LED starts.
+time_stamps: one dimensional array of time stamps</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.replot_projections">
+<code class="descclassname">tofu_functions.</code><code class="descname">replot_projections</code><span class="sig-paren">(</span><em>limits</em>, <em>panel_choice</em>, <em>times_of_flight</em>, <em>energy_S1</em>, <em>energy_S2</em>, <em>bins_tof</em>, <em>bins_energy</em>, <em>bins_2D</em>, <em>log=True</em>, <em>disable_cuts=False</em>, <em>disable_bgs=False</em>, <em>energy_S1_cut=0</em>, <em>energy_S2_cut=0</em>, <em>times_of_flight_cut=0</em>, <em>proton_recoil=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.replot_projections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replot the spectra with a cut on one of the energy projections
+limits: limits of cuts for projections. 1x2 array for 1D spectrum, 2x2 array for 2D spectrum
+panel_choice: panel to be cut (BR - bottom right, ML - middle left, TR - top right etc.)
+times_of_flight: 1D array of times of flight
+energy_S1: 1D array of energies for S1
+energy_S2: 1D array of energies for S2</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.sTOF4">
+<code class="descclassname">tofu_functions.</code><code class="descname">sTOF4</code><span class="sig-paren">(</span><em>S1_times</em>, <em>S2_times</em>, <em>t_back=100</em>, <em>t_forward=100</em>, <em>return_indices=False</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.sTOF4" title="Permalink to this definition">¶</a></dt>
+<dd><p>We choose an event in S2, define the width of the window in which we want
+to search for an event in S1 and calculate the time difference between 
+the chosen S2 time stamp and the found S1 time stamp(s)
+S1_times: 1D array of time stamps for one S1
+S2_times: 1D array of time stamps for one S2
+t_back: Number of time units (usually ns) to look back in time to find coincidences between S2 and S1 (gives positive TOF’s)
+t_forward: Number of time units (usually ns) to look forwards in time to find coincidences between S2 and S1 (gives negative TOF’s)
+Example: coincidences = sTOF3(S1_time_stamps, S2_time_stamps, t_back = 400, t_forward = 200)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.sinc_interpolation">
+<code class="descclassname">tofu_functions.</code><code class="descname">sinc_interpolation</code><span class="sig-paren">(</span><em>pulse_data</em>, <em>x_values</em>, <em>ux_values</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.sinc_interpolation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs sinc interpolation on the pulse data set.
+pulse_data: array of pulse height data where each row corresponds to one record.</p>
+<blockquote>
+<div>NOTE: pulse_data must be baseline reduced (see baseline_reduction() function), otherwise sinc interpolation fails.</div></blockquote>
+<dl class="docutils">
+<dt>x_values:   one dimensional array of values corresponding to pulse_data’s x-axis.</dt>
+<dd>must have a constant period.</dd>
+</dl>
+<p>ux_values:  one dimensional array similar to x_values but upsampled.
+Example:</p>
+<blockquote>
+<div>pulse_data is the regular m*n array where m = number of records and n = number of samples per record
+x_axis = np.arange(0, n)
+u_factor = 10 is the upsampling factor
+ux_axis = np.arange(0, n, 1./u_factor)
+u_pulse_data = sinc_interpolation(pulse_data, x_axis, ux_axis)</div></blockquote>
+<p>From Matlab example: <a class="reference external" href="http://phaseportrait.blogspot.com/2008/06/sinc-interpolation-in-matlab.html">http://phaseportrait.blogspot.com/2008/06/sinc-interpolation-in-matlab.html</a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tofu_functions.time_pickoff_CFD">
+<code class="descclassname">tofu_functions.</code><code class="descname">time_pickoff_CFD</code><span class="sig-paren">(</span><em>pulse_data</em>, <em>fraction=0.3</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.time_pickoff_CFD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the times of arrival for a 2D array of pulses using a constant
+fraction + linear interpolation method.
+pulse_data: 2D array of pulses where each row corresponds to one pulse
+fraction: fraction at which to perform linear interpolation
+return a 1D array of times-of-arrival for each pulse.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">docs</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Benjamin Eriksson.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

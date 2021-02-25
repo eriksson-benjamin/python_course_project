@@ -1,0 +1,36 @@
+Wrote profile results to time_profiler.py.lprof
+Timer unit: 1e-06 s
+
+Total time: 1.52445 s
+File: /home/beriksso/TOFu/analysis/benjamin/github/TOFu/optimization/get_pulse_area/gpa.py
+Function: get_pulse_area at line 3
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+     3                                           @profile
+     4                                           def get_pulse_area(pulses, u_factor):
+     5                                               '''
+     6                                               Returns the areas under an array of pulses
+     7                                               pulses: m*n array of pulses
+     8                                               u_factor: frequency of samples in each pulse (u_factor = 10 -> 1/10 ns between each sample)
+     9                                               '''
+    10                                               
+    11                                               # Chunk data if too many pulses
+    12         1        117.0    117.0      0.0      pulse_area = np.zeros(len(pulses))
+    13                                               
+    14         1          5.0      5.0      0.0      if len(pulses) > 1E+6:
+    15                                                   # Chunk array in chunks of ~1E6 rows
+    16         1         38.0     38.0      0.0          n_chunks = int(np.ceil(len(pulses) / 1E+6))
+    17         1        169.0    169.0      0.0          chunked_data = np.array_split(pulses, n_chunks, axis = 0)
+    18                                               
+    19                                               # Otherwise use full data set at once
+    20                                               else: chunked_data = [pulses]
+    21                                               
+    22                                               # Find area under pulse
+    23         1          1.0      1.0      0.0      counter = 0
+    24         3          6.0      2.0      0.0      for chunk in chunked_data:
+    25         2    1524104.0 762052.0    100.0          pulse_area[counter:len(chunk) + counter] = np.trapz(chunk, axis = 1, dx = 1. / u_factor)
+    26         2         13.0      6.5      0.0          counter += len(chunk)
+    27                                                   
+    28         1          1.0      1.0      0.0      return pulse_area
+

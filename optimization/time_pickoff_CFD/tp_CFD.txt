@@ -1,0 +1,131 @@
+Wrote profile results to time_profiler.py.lprof
+Timer unit: 1e-06 s
+
+Total time: 0.443927 s
+File: /home/beriksso/TOFu/analysis/benjamin/github/TOFu/optimization/time_pickoff_CFD/tp_CFD.py
+Function: linear_regression at line 3
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+     3                                           @profile
+     4                                           def linear_regression(x_data, y_data, timer = False):
+     5                                               '''
+     6                                               Returns the slope (A) and intersection (B) for a simple linear regression on x and y data.
+     7                                               x_data: 2D array of values where each row corresponds to one event to perform linear regression on
+     8                                               y_data: 2D array of values where each row corresponds to one event to perform linear regression on
+     9                                               product_1, product_2 and product_3 correspond to the three products for calculating beta in 
+    10                                               https://en.wikipedia.org/wiki/Simple_linear_regression
+    11                                               '''
+    12                                           #    if timer: t_start = elapsed_time()
+    13                                               
+    14                                               # Find average
+    15         4      49462.0  12365.5     11.1      x_mean = np.mean(x_data, axis = 1)
+    16         4      62842.0  15710.5     14.2      y_mean = np.mean(y_data, axis = 1)
+    17                                               
+    18         4      37449.0   9362.2      8.4      product_1 = np.transpose(np.transpose(x_data) - x_mean)
+    19         4      27922.0   6980.5      6.3      product_2 = np.transpose(np.transpose(y_data) - y_mean)
+    20         4      54700.0  13675.0     12.3      product_3 = product_1 ** 2
+    21                                               
+    22                                               # Calculate slopes and intersection (y = slope*x + intercept)
+    23         4     128032.0  32008.0     28.8      slope = np.sum(product_1 * product_2, axis = 1) / np.sum(product_3, axis = 1)
+    24         4      83507.0  20876.8     18.8      intercept = np.mean(y_data, axis = 1) - slope * x_mean
+    25                                               
+    26                                           #    if timer: elapsed_time(t_start, 'linear_regression()')    
+    27         4         13.0      3.2      0.0      return slope, intercept
+
+Total time: 0.978544 s
+File: /home/beriksso/TOFu/analysis/benjamin/github/TOFu/optimization/time_pickoff_CFD/tp_CFD.py
+Function: find_points at line 29
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    29                                           @profile
+    30                                           def find_points(pulse_data, value, timer = False):
+    31                                               '''
+    32                                               Returns the index of the point closest to "value" in pulse_data.
+    33                                               pulse_data: array of pulse height data where each row corresponds to one record. 
+    34                                                           NOTE: pulse_data must be baseline reduced (see baseline_reduction() function).
+    35                                               value: one dimensional array of values for which you want to find the closest index in pulse_data 
+    36                                               '''
+    37                                           #    if timer: t_start = elapsed_time()
+    38                                               
+    39                                               # Subtract the constant fraction value from the data set
+    40         4     820057.0 205014.2     83.8      delta = pulse_data - value[:, None]
+    41                                               
+    42                                               # Find the index of the first positive value
+    43         4     139759.0  34939.8     14.3      mask = delta <= 0
+    44                                               
+    45         4      18712.0   4678.0      1.9      index = np.argmax(mask, axis = 1) 
+    46                                               
+    47                                           #    if timer: elapsed_time(t_start, 'find_points()')
+    48         4         16.0      4.0      0.0      return index  
+
+Total time: 2.42823 s
+File: /home/beriksso/TOFu/analysis/benjamin/github/TOFu/optimization/time_pickoff_CFD/tp_CFD.py
+Function: time_pickoff_CFD at line 50
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    50                                           @profile
+    51                                           def time_pickoff_CFD(pulse_data, fraction = 0.3, timer = False):
+    52                                               '''
+    53                                               Returns the times of arrival for a 2D array of pulses using a constant
+    54                                               fraction + linear interpolation method.
+    55                                               pulse_data: 2D array of pulses where each row corresponds to one pulse
+    56                                               fraction: fraction at which to perform linear interpolation
+    57                                               return a 1D array of times-of-arrival for each pulse.
+    58                                               '''
+    59                                               
+    60         1        113.0    113.0      0.0      new_time = np.zeros([len(pulse_data)])
+    61                                           
+    62                                               # Determine whether data needs to be chunked or not
+    63         1          6.0      6.0      0.0      if len(pulse_data) > 5E+5: chunk_data = True
+    64                                               else: chunk_data = False
+    65                                           
+    66                                           #    if timer: t_start = elapsed_time()
+    67         1          1.0      1.0      0.0      if chunk_data:
+    68                                                   # Chunk array in chunks of ~5E5 rows
+    69         1         57.0     57.0      0.0          n_chunks = int(np.ceil(len(pulse_data) / 5E+5))
+    70         1        358.0    358.0      0.0          chunked_data = np.array_split(pulse_data, n_chunks, axis = 0)
+    71                                                   
+    72                                           
+    73                                               else: chunked_data = [pulse_data]
+    74         1          1.0      1.0      0.0      new_time_counter = 0
+    75         5         10.0      2.0      0.0      for pulse_data in chunked_data:
+    76                                                   # Find the minima and a fraction of the minima
+    77         4     698581.0 174645.2     28.8          minima = np.min(pulse_data, axis = 1)
+    78         4       3331.0    832.8      0.1          minima_fraction = minima * fraction
+    79                                                   # Find position of minimum
+    80                                               #    minima_pos = np.argmin(pulse_data, axis = 1)
+    81                                               #    print('Warning: ' + str(len(minima_pos[minima_pos < 100])) + ' pulses have minimum before 10 ns.')
+    82                                                   
+    83                                               
+    84                                                   # Find the index of the point closest to the fraction of the minimum
+    85                                                   # Look only in the first 25 ns (leading edge) of the pulse
+    86         4    1069775.0 267443.8     44.1          x_closest = find_points(pulse_data[:, 0:250], minima_fraction, timer = timer)
+    87                                               
+    88                                               
+    89                                                   # Set up for simple linear regression
+    90         4       5053.0   1263.2      0.2          reg_x = np.zeros([len(x_closest), 3])
+    91         4       5102.0   1275.5      0.2          reg_y = np.zeros([len(x_closest), 3])
+    92         4       2260.0    565.0      0.1          array_1D = np.arange(0, len(pulse_data), 1)
+    93                                                   
+    94                                                   # Choose the three points on which to perform simple linear regression
+    95         4      52458.0  13114.5      2.2          reg_y[:, 0] = pulse_data[array_1D, x_closest - 1]
+    96         4      40998.0  10249.5      1.7          reg_y[:, 1] = pulse_data[array_1D, x_closest]
+    97         4      43859.0  10964.8      1.8          reg_y[:, 2] = pulse_data[array_1D, x_closest + 1]
+    98                                               
+    99         4      14719.0   3679.8      0.6          reg_x[:, 0] = x_closest - 1
+   100         4       5584.0   1396.0      0.2          reg_x[:, 1] = x_closest
+   101         4       8099.0   2024.8      0.3          reg_x[:, 2] = x_closest + 1
+   102                                                   
+   103                                                   # Perform simple linear regression
+   104         4     450615.0 112653.8     18.6          slopes, intercepts = linear_regression(reg_x, reg_y, timer = timer)
+   105                                                   # Solve the y = kx + m equation for x. y = minima_fraction
+   106         4      27236.0   6809.0      1.1          new_time[new_time_counter:len(pulse_data)+new_time_counter] = (minima_fraction - intercepts) / slopes
+   107         4         15.0      3.8      0.0          new_time_counter += len(pulse_data)
+   108                                                   
+   109                                           
+   110                                           #    if timer: elapsed_time(t_start, 'time_pickoff_CFD()')
+   111         1          1.0      1.0      0.0      return new_time
+

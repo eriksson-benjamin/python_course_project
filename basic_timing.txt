@@ -1,0 +1,160 @@
+Shot number: 94874
+Running on 16 cores.
+Collecting data from LPF...
+S2_03 data downloaded.
+S2_15 data downloaded.
+S2_26 data downloaded.
+S2_08 data downloaded.
+S2_23 data downloaded.
+S2_05 data downloaded.
+S2_24 data downloaded.
+S2_04 data downloaded.
+S2_13 data downloaded.
+S2_17 data downloaded.
+S2_25 data downloaded.
+S2_06 data downloaded.
+S2_27 data downloaded.
+S2_10 data downloaded.
+S2_21 data downloaded.
+S2_01 data downloaded.
+S2_12 data downloaded.
+S2_16 data downloaded.
+S2_20 data downloaded.
+S2_29 data downloaded.
+S2_07 data downloaded.
+S2_18 data downloaded.
+S2_30 data downloaded.
+S2_02 data downloaded.
+S2_14 data downloaded.
+S2_19 data downloaded.
+S2_31 data downloaded.
+S2_09 data downloaded.
+S2_22 data downloaded.
+S2_32 data downloaded.
+S2_11 data downloaded.
+S2_28 data downloaded.
+Elapsed time for get_detector_name(): 0.00 sec.
+Elapsed time for get_times(): 1.33 sec.
+Elapsed time for get_pulses(): 8.90 sec.
+S1_05 data downloaded.
+Elapsed time for import_all_data(): 10.55 sec.
+S1_04 data downloaded.
+S1_03 data downloaded.
+S1_02 data downloaded.
+
+Removing non-coincident pulses.
+Elapsed time for sTOF4(): 0.32 sec.
+Elapsed time for sTOF4(): 0.28 sec.
+Elapsed time for sTOF4(): 0.26 sec.
+Elapsed time for sTOF4(): 0.27 sec.
+Elapsed time for sTOF4(): 0.26 sec.
+Elapsed time for sTOF4(): 0.28 sec.
+Elapsed time for sTOF4(): 0.26 sec.
+Elapsed time for sTOF4(): 0.31 sec.
+Elapsed time for sTOF4(): 0.28 sec.
+Elapsed time for sTOF4(): 0.30 sec.
+Elapsed time for sTOF4(): 0.28 sec.
+Elapsed time for sTOF4(): 0.27 sec.
+Elapsed time for sTOF4(): 0.46 sec.
+Elapsed time for sTOF4(): 0.25 sec.
+Elapsed time for sTOF4(): 0.29 sec.
+Elapsed time for sTOF4(): 0.14 sec.
+Elapsed time for sTOF4(): 0.27 sec.
+Elapsed time for sTOF4(): 0.24 sec.
+Elapsed time for sTOF4(): 0.33 sec.
+Elapsed time for sTOF4(): 0.23 sec.
+Elapsed time for sTOF4(): 0.26 sec.
+Elapsed time for sTOF4(): 0.34 sec.
+Elapsed time for sTOF4(): 0.27 sec.
+Elapsed time for sTOF4(): 0.21 sec.
+Elapsed time for sTOF4(): 0.24 sec.
+Elapsed time for sTOF4(): 0.29 sec.
+Elapsed time for sTOF4(): 0.16 sec.
+Elapsed time for sTOF4(): 0.27 sec.
+Elapsed time for sTOF4(): 0.28 sec.
+Elapsed time for sTOF4(): 0.22 sec.
+Elapsed time for sTOF4(): 0.11 sec.
+Elapsed time for get_shifts(): 0.01 sec.
+
+Finding coincidences between S1's
+Elapsed time for sTOF4(): 1.34 sec.
+S1_03, S1_05 done.
+Elapsed time for sTOF4(): 1.41 sec.
+S1_02, S1_05 done.
+Elapsed time for sTOF4(): 1.37 sec.
+S1_01, S1_05 done.
+S1_03, S1_04 done.
+Elapsed time for sTOF4(): 1.42 sec.
+S1_04, S1_05 done.
+S1_01, S1_04 done.
+S1_01, S1_02 done.
+S1_02, S1_03 done.
+S1_02, S1_04 done.
+
+Time range set to: 40.00 < t < 52.96
+Performing time-pickoff.
+S2_02: Done
+S2_24: Done
+S2_06: Done
+S2_28: Done
+S2_11: Done
+S2_14: Done
+S2_19: Done
+S2_03: Done
+S2_27: Done
+S2_20: Done
+S2_08: Done
+S2_32: Done
+S2_25: Done
+S2_04: Done
+S2_31: Done
+S2_26: Done
+S1_03: Done
+S2_07: Done
+Elapsed time for get_pre_trigger(): 0.00 sec.
+Elapsed time for get_trigger_level(): 0.00 sec.
+Elapsed time for find_threshold(): 1.51 sec.
+Elapsed time for baseline_reduction(): 1.08 sec.
+Elapsed time for sinc_interpolation(): 4.76 sec.
+Elapsed time for get_pulse_area(): 5.08 sec.
+Elapsed time for get_energy_calibration(): 0.06 sec.
+Elapsed time for find_points(): 0.94 sec.
+Elapsed time for linear_regression(): 0.21 sec.
+Elapsed time for time_pickoff_CFD(): 1.62 sec.
+Elapsed time for S1_05: 19.59 sec.
+S1_05: Done
+S1_04: Done
+S2_10: Done
+S2_15: Done
+S2_16: Done
+
+Generating TOF spectrum...
+Elapsed time for get_shifts(): 0.00 sec.
+Elapsed time for sTOF4(): 0.43 sec.
+Elapsed time for sTOF4(): 0.47 sec.
+Elapsed time for sTOF4(): 0.55 sec.
+Elapsed time for sTOF4(): 0.59 sec.
+Elapsed time for sTOF4(): 0.45 sec.
+Elapsed time for sTOF4(): 0.69 sec.
+Elapsed time for sTOF4(): 0.55 sec.
+Elapsed time for sTOF4(): 0.34 sec.
+Elapsed time for sTOF4(): 0.64 sec.
+Elapsed time for sTOF4(): 0.45 sec.
+Elapsed time for sTOF4(): 0.54 sec.
+Elapsed time for sTOF4(): 0.38 sec.
+Elapsed time for sTOF4(): 0.36 sec.
+Elapsed time for sTOF4(): 0.61 sec.
+Elapsed time for sTOF4(): 0.77 sec.
+Elapsed time for sTOF4(): 0.45 sec.
+Elapsed time for sTOF4(): 0.49 sec.
+Elapsed time for kinematic_cuts(): 0.42 sec.
+Elapsed time for all boards: 88.48 sec.
+
+Select one of the following panels and set upper and lower limits to project the selected limit onto the other dimensions.
+TL - top left
+TR - top right
+ML - middle left
+MR - middle right
+BR - bottom right
+Type exit to exit.
+Select panel (TL, TR, ML, MR, BR): 
