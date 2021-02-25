@@ -60,8 +60,9 @@ def get_doubles(arguments):
     if a not in enabled_detectors or b not in enabled_detectors: return np.array([])
     s1_a = S1_times[a]
     s1_b = S1_times[b]
-
+    t_test = dfs.elapsed_time()
     _, inds = dfs.sTOF4(np.array(s1_a), np.array(s1_b), t_back = 10, t_forward = 10, return_indices = True, timer = timer_level)
+    dfs.elapsed_time(t_test, 'First call')
     print(f'{a}, {b} done.')
     return inds
 
@@ -73,7 +74,6 @@ def get_tof(arguments):
     s1 = arguments[0][0:5]
     s2 = arguments[0][6:]
     
-    # Set timer level
     s1_timer_level = set_timer_level(s1)
     s2_timer_level = set_timer_level(s2)
     timer_level = s1_timer_level or s2_timer_level
@@ -83,9 +83,9 @@ def get_tof(arguments):
     
     s1_times = arguments[1][s1]
     s2_times = arguments[1][s2]
-  
+    t_test = dfs.elapsed_time()
     tof, inds = dfs.sTOF4(s1_times, s2_times, t_back = time_window, t_forward = time_window, return_indices = True, timer = timer_level)
-
+    dfs.elapsed_time(t_test, 'Second call')
 
     return tof, inds, s1, s2
 
@@ -866,4 +866,3 @@ if __name__=="__main__":
             
 
          
-    

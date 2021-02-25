@@ -14,6 +14,9 @@ import matplotlib.pyplot as plt
 import scipy.constants as constant
 import scipy.optimize as optimize
 from matplotlib.lines import Line2D
+import sys
+sys.path.insert(0, '/home/beriksso/TOFu/analysis/benjamin/github/TOFu/functions/cythonized/CyTOF')
+import CyTOF
 
 def get_pulses(board, channel, shot_number, pulse_start = -1, pulse_end = -1, timer = False):
     '''
@@ -451,7 +454,18 @@ def find_points(pulse_data, value, timer = False):
     if timer: elapsed_time(t_start, 'find_points()')
     return index   
     
-#@profile
+def find_coincidences(S1_times, S2_times, t_back = 100, t_forward = 100, return_indices = False, timer = False):
+    '''
+    
+    '''
+    if timer: t_start = elapsed_time()
+    coincidences = CyTOF.CyTOF(S1_times, S2_times, t_back, t_forward, return_indices)
+    if timer: elapsed_time(t_start, 'CyTOF()')
+    if return_indices:
+        return coincidences[0], coincidences[1]
+    else:
+        return coincidences
+    
 def sTOF4(S1_times, S2_times, t_back = 100, t_forward = 100, return_indices = False, timer = False):
 
     '''
