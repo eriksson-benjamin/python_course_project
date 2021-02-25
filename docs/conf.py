@@ -20,7 +20,7 @@
 # -- Project information -----------------------------------------------------
 import sys
 import os
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../functions/'))
 project = 'docs'
 copyright = '2021, Benjamin Eriksson'
 author = 'Benjamin Eriksson'

@@ -190,13 +190,34 @@ def get_temperatures(board, shot_number, timer = False):
     For ADQ412 five temperatures are returned, two of which are always 256, these temperature locations on the boards
     are not available for our cards. For ADQ14 seven temperatures are returned.
     For information on where the temperatures are measured see the function GetTemperature() in the ADQAPI manual.
-    Example how to call: T_before, T_after = get_temperatures('04', 94207)
+    
+    Parameters
+    ----------
+    board : int or string
+          Board number (between 1-10) for requested temperatures.
+    shot_number : int or string
+                JET pulse number
+    timer : bool, optional
+          If set to True, prints the time to execute the function.
+         
+    Returns
+    -------
+    T0, T1 : ndarray
+           Array of temperatures on the boards before and after acquisition.
+           
+    Examples
+    --------
+    >>> get_temperatures(4, 94207)
+    (array([ 36.125, 256.   , 256.   ,  68.625,  41.5  ], dtype=float32),
+     array([ 36.25 , 256.   , 256.   ,  69.5  ,  41.875], dtype=float32)
     '''
     if timer: t_start = elapsed_time()
     
-    file_name_1 = 'M11D-B' + board + '<T0'
-    file_name_2 = 'M11D-B' + board + '<TE'
+    if int(board) < 10: board = f'0{int(board)}'
     
+    file_name_1 = f'M11D-B{board}<T0'
+    file_name_2 = f'M11D-B{board}<TE'
+
     # Get temperatures
     T0 = gd.getbyte(file_name_1, shot_number)[0]
     TE = gd.getbyte(file_name_2, shot_number)[0]
@@ -208,35 +229,80 @@ def get_temperatures(board, shot_number, timer = False):
     
 def get_trigger_level(board, channel, shot_number, timer = False):
     '''
-    Returns the trigger level used for the given shot, board and channel
-    Example how to call: trig_level = get_trigger_level('01', 'A', 94207)
+    Returns the trigger level in codes used for the given shot, board and channel
+    
+    Parameters
+    ----------
+    board : int or string, optional
+          Board number (between 1-10) for requested trigger level.
+    channel : string
+            Channel name for requested data (A, B, C or D).
+    shot_number : int or string
+                JET pulse number.
+    timer : bool, optional
+          If set to True, prints the time to execute the function.
+    
+    Returns
+    -------
+    trigger_level : int
+                  Trigger level in codes.
+                  
+    Examples
+    --------
+    >>> get_trigger_level(8, 'A', 97100)
+    1500
+    >>> get_trigger_level(1, 'B', 97200)
+    26000
     '''
     if timer: t_start = elapsed_time()
     
-    file_name = 'M11D-B' + board + '>TL' + channel
+    if int(board) < 10: board = f'0{int(board)}'
+    file_name = f'M11D-B{board}>TL{channel}'
     
     # Get trigger level
     tlvl, nD, ier = gd.getbyte(file_name, shot_number)
     tlvl.dtype = np.int16
-    
+    trigger_level = tlvl.byteswap()[0]
     if timer: elapsed_time(t_start, 'get_trigger_level()')
-    return tlvl.byteswap()[0]
+    return trigger_level
 
 def get_pre_trigger(board, shot_number, timer = False):
     '''
-    Returns the number of pre trigger samples used for the given shot and board.
-    Example how to call: trig_level = get_trigger_level('01', 'A', 94207)
+    Returns the number of pre-trigger samples used for the given shot and 
+    board.
+    
+    Parameters
+    ----------
+    board : int or string
+          Board number (between 1-10).
+    shot_number : int or string
+                JET pulse number.
+    timer : bool, optional
+          If set to True, prints the time to execute the function.
+    
+    Returns
+    -------
+    prt_samples : int
+                Number of pre-trigger samples.
+    
+    Examples
+    --------
+    >>> get_pre_trigger(1, 97100)
+    16
+    >>> get_pre_trigger(10, 97200)
+    16
     '''
     if timer: t_start = elapsed_time()
-    
-    file_name = 'M11D-B' + board + '>PRT'
+    if int(board) < 10: board = f'0{int(board)}'
+
+    file_name = f'M11D-B{board}>PRT'
     
     # Get number of pre trigger samples
-    prt, nD, ier = gd.getbyte(file_name, shot_number)
+    prt_samples, _, _ = gd.getbyte(file_name, shot_number)
     
     
     if timer: elapsed_time(t_start, 'get_pre_trigger()')
-    return prt[1]
+    return prt_samples[1]
 
 def get_bias_level(board, shot_number, timer = False):
     '''
