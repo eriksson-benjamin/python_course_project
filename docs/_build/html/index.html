@@ -60,8 +60,44 @@ TOF_hist: tuple of histogram information (events, bins)</p>
 <dl class="function">
 <dt id="tofu_functions.baseline_reduction">
 <code class="descclassname">tofu_functions.</code><code class="descname">baseline_reduction</code><span class="sig-paren">(</span><em>pulse_data</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.baseline_reduction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the same pulse data array with the base line at zero.
-pulse_data: array of pulse height data where each row corresponds to one record.</p>
+<dd><p>Subtracts the baseline average of the first 10 samples from each pulse. 
+Returns the same pulse data array with the base line centred around zero.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>pulse_data</strong> <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
+<dd><p class="first last">2D array of pulse waveforms where each row corresponds to one 
+pulse. Typically 64 samples in each row for ADQ14 (board 1-5) 
+and 56 samples for ADQ412 (board 6-10).</p>
+</dd>
+<dt><strong>timer</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd><p class="first last">If set to True, prints the time to execute the function.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>pulses_baseline</strong> <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
+<dd><p class="first last">Same as pulse_data but with baseline centred around 0.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">baseline_reduction</span><span class="p">(</span>
+<span class="go">                array([[26969, 26974, 26992, ..., 26793, 26734, 26671],</span>
+<span class="go">                       ...,</span>
+<span class="go">                       [26969, 26951, 26974, ..., 26684, 26675, 26630]])</span>
+<span class="go">                      )</span>
+<span class="go">array([[  -9.6,   -4.6,   13.4, ..., -185.6, -244.6, -307.6],</span>
+<span class="go">       ...,</span>
+<span class="go">       [   1.8,  -16.2,    6.8, ..., -283.2, -292.2, -337.2]])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -129,8 +165,40 @@ Assumes shot start at 40 seconds.</p>
 <dl class="function">
 <dt id="tofu_functions.get_bias_level">
 <code class="descclassname">tofu_functions.</code><code class="descname">get_bias_level</code><span class="sig-paren">(</span><em>board</em>, <em>shot_number</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_bias_level" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the bias level for the given shot, board and channel.
-Example how to call: bias_level = get_bias_level(‘01’, ‘A’, 94207)</p>
+<dd><p>Returns the bias level for the given shot, board and channel.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>board</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><p class="first last">Board number (between 1-10).</p>
+</dd>
+<dt><strong>shot_number</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><p class="first last">JET pulse number.</p>
+</dd>
+<dt><strong>timer</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd><p class="first last">If set to True, prints the time to execute the function.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>blvl</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Bias level in codes</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_bias_level</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">97100</span><span class="p">)</span>
+<span class="go">27000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_bias_level</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">97100</span><span class="p">)</span>
+<span class="go">1600</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -243,8 +311,41 @@ ADQ412 boards.</p>
 <dl class="function">
 <dt id="tofu_functions.get_pre_trigger">
 <code class="descclassname">tofu_functions.</code><code class="descname">get_pre_trigger</code><span class="sig-paren">(</span><em>board</em>, <em>shot_number</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_pre_trigger" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the number of pre trigger samples used for the given shot and board.
-Example how to call: trig_level = get_trigger_level(‘01’, ‘A’, 94207)</p>
+<dd><p>Returns the number of pre-trigger samples used for the given shot and 
+board.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>board</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><p class="first last">Board number (between 1-10).</p>
+</dd>
+<dt><strong>shot_number</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><p class="first last">JET pulse number.</p>
+</dd>
+<dt><strong>timer</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd><p class="first last">If set to True, prints the time to execute the function.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>prt_samples</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Number of pre-trigger samples.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_pre_trigger</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">97100</span><span class="p">)</span>
+<span class="go">16</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_pre_trigger</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">97200</span><span class="p">)</span>
+<span class="go">16</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -317,8 +418,39 @@ samples for ADQ412 (board 6-10).</p>
 <dd><p>Returns temperatures (deg C) at different locations on the ADQ412 and ADQ14 boards before and after acquisition.
 For ADQ412 five temperatures are returned, two of which are always 256, these temperature locations on the boards
 are not available for our cards. For ADQ14 seven temperatures are returned.
-For information on where the temperatures are measured see the function GetTemperature() in the ADQAPI manual.
-Example how to call: T_before, T_after = get_temperatures(‘04’, 94207)</p>
+For information on where the temperatures are measured see the function GetTemperature() in the ADQAPI manual.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>board</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><p class="first last">Board number (between 1-10) for requested temperatures.</p>
+</dd>
+<dt><strong>shot_number</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><p class="first last">JET pulse number</p>
+</dd>
+<dt><strong>timer</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd><p class="first last">If set to True, prints the time to execute the function.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>T0, T1</strong> <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
+<dd><p class="first last">Array of temperatures on the boards before and after acquisition.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_temperatures</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">94207</span><span class="p">)</span>
+<span class="go">(array([ 36.125, 256.   , 256.   ,  68.625,  41.5  ], dtype=float32),</span>
+<span class="go"> array([ 36.25 , 256.   , 256.   ,  69.5  ,  41.875], dtype=float32)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -375,8 +507,43 @@ channel are not. E.g. “S1_01”, “S1_02”, “S2_01”, “S2_02” etc.</p
 <dl class="function">
 <dt id="tofu_functions.get_trigger_level">
 <code class="descclassname">tofu_functions.</code><code class="descname">get_trigger_level</code><span class="sig-paren">(</span><em>board</em>, <em>channel</em>, <em>shot_number</em>, <em>timer=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tofu_functions.get_trigger_level" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the trigger level used for the given shot, board and channel
-Example how to call: trig_level = get_trigger_level(‘01’, ‘A’, 94207)</p>
+<dd><p>Returns the trigger level in codes used for the given shot, board and channel</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>board</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or string, optional</span></dt>
+<dd><p class="first last">Board number (between 1-10) for requested trigger level.</p>
+</dd>
+<dt><strong>channel</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Channel name for requested data (A, B, C or D).</p>
+</dd>
+<dt><strong>shot_number</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or string</span></dt>
+<dd><p class="first last">JET pulse number.</p>
+</dd>
+<dt><strong>timer</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd><p class="first last">If set to True, prints the time to execute the function.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>trigger_level</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Trigger level in codes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_trigger_level</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="mi">97100</span><span class="p">)</span>
+<span class="go">1500</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_trigger_level</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">97200</span><span class="p">)</span>
+<span class="go">26000</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
